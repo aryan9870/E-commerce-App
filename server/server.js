@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import ErrorHandler from "./utils/errorHandler.js";
+import userRoutes from  "./routes/userRoute.js";
 
 const app = express();
 connectDB();
@@ -20,6 +21,9 @@ app.get("/", (req, res) => {
     message: "API is running",
   });
 });
+
+// Routes
+app.use("/api/v1/users", userRoutes);
 
 // Port
 const PORT = process.env.PORT || 5000;

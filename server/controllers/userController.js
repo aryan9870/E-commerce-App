@@ -67,3 +67,18 @@ export const loginUser = async (req, res, next) => {
       user,
     });
 };
+
+export const logoutUser = async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("token", null, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      expires: new Date(Date.now()), // expire immediately
+    })
+    .json({
+      success: true,
+      message: "Logout successful",
+    });
+};

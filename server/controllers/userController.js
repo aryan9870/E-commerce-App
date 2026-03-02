@@ -5,10 +5,6 @@ import ErrorHandler from "../utils/errorHandler.js";
 export const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
-    return next(new ErrorHandler("All fields are required", 400));
-  }
-
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return next(new ErrorHandler("User already exists", 400));
@@ -17,7 +13,7 @@ export const registerUser = async (req, res, next) => {
   const user = await User.create({ name, email, password });
 
   const token = user.generateToken();
-
+  user.password = undefined;
   res
     .status(201)
     .cookie("token", token, {
@@ -36,10 +32,6 @@ export const registerUser = async (req, res, next) => {
 // Login User
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next(new ErrorHandler("Email and password required", 400));
-  }
 
   const user = await User.findOne({ email }).select("+password");
   if (!user) {

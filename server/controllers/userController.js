@@ -74,3 +74,10 @@ export const logoutUser = async (req, res, next) => {
       message: "Logout successful",
     });
 };
+
+export const isAuthenticated = (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: req.user,
+  });
+};

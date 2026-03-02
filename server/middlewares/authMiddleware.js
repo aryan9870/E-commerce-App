@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
 import ErrorHandler from "../utils/errorHandler.js";
 
-const isLoggedIn = async (req, res, next) => {
+export const isLoggedIn = async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
@@ -24,4 +24,9 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-export default isLoggedIn;
+export const isAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return next(new ErrorHandler("Access denied. Admin only.", 403));
+  }
+  next();
+};

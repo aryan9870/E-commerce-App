@@ -2,7 +2,7 @@ import express from "express";
 import { registerUser, loginUser, logoutUser, isAuthenticated } from "../controllers/userController.js";
 import { registerSchema, loginSchema } from "../validations/userValidation.js";
 import validate from "../middlewares/validate.js";
-import isLoggedIn from "../middlewares/authMiddleware.js";
+import { isLoggedIn } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import ErrorHandler from "./utils/errorHandler.js";
 import userRoutes from  "./routes/userRoute.js";
+import productRoutes from  "./routes/productRoute.js";
 
 const app = express();
 connectDB();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/products", productRoutes);
 
 // Port
 const PORT = process.env.PORT || 5000;

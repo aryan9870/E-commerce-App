@@ -1,5 +1,6 @@
 import Product from "../models/productSchema.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import { uploadToCloudinary } from "../config/cloudinary.js";
 
 // Get list of all products (no filters/pagination yet)
 export const getProducts = async (req, res, next) => {
@@ -38,6 +39,22 @@ export const createProduct = async (req, res, next) => {
     isFeatured,
   } = req.body;
 
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "At least 1 product image is required"
+    });
+  }
+
+  let imageUrls = [];
+
+  if (req.files && req.files.length > 0) {
+    for (const file of req.files) {
+      const result = await uploadToCloudinary(file.buffer);
+      imageUrls.push(result.secure_url);
+    }
+  }
+
   // Directly pass the extracted fields to Mongoose create
   const product = await Product.create({
     name,
@@ -50,6 +67,7 @@ export const createProduct = async (req, res, next) => {
     sizes,
     stock,
     isFeatured,
+    images: imageUrls,
   });
 
   res.status(201).json({

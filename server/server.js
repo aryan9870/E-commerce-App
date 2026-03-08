@@ -5,7 +5,8 @@ import connectDB from "./config/db.js";
 import ErrorHandler from "./utils/errorHandler.js";
 import userRoutes from  "./routes/userRoute.js";
 import productRoutes from  "./routes/productRoute.js";
-import cartRoute from "./routes/cartRoute.js"
+import cartRoute from "./routes/cartRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 
 const app = express();
 connectDB();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/carts", cartRoute);
+app.use("/api/v1/orders", orderRoute);
 
 // Port
 const PORT = process.env.PORT || 5000;

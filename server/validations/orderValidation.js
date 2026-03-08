@@ -26,3 +26,7 @@ export const orderSchema = joi.object({
     .valid("pending", "shipped", "delivered")
     .default("pending"),
 });
+
+export const updateOrderStatusSchema = joi.object({
+  status: joi.string().valid("pending", "shipped", "delivered").required(),
+});

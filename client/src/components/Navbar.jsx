@@ -13,7 +13,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="py-5 px-20 fixed top-0 left-0 right-0 z-10 bg-white max-sm:px-5">
+    <div className="py-5 px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5">
       <div className="flex justify-between items-center">
         <div
           className="text-black font-bold text-4xl cursor-pointer flex items-center max-sm:text-2xl"

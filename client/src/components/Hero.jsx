@@ -8,13 +8,13 @@ const Hero = () => {
   return (
     <>
       <div
-        className="w-full h-screen mt-20 bg-cover bg-center max-sm:mt-15 max-sm:bg-none relative"
+        className="w-full h-fit md:h-screen mt-20 bg-cover bg-center max-sm:mt-18 max-sm:bg-none relative"
         style={{  
           backgroundImage: `url(${assets.coverImage})`,
         }}
       >
-        <div className="p-20 flex flex-col gap-5 h-[85%] max-sm:h-full justify-center max-sm:px-0 max-sm:py-5 max-sm:gap-2 max-sm:justify-start">
-          <div className="max-sm:px-5 max-sm:bg-[#F2F0F1] flex gap-5 flex-col">
+        <div className="p-20 flex flex-col gap-5 max-sm:h-[90%] h-[85%] justify-center max-sm:px-0 max-sm:py-5 max-sm:justify-start">
+          <div className="max-sm:px-5 max-sm:bg-[#F2F0F1] flex gap-10 flex-col">
             <h1 className="text-5xl font-bold max-sm:text-4xl">
               FIND CLOTHES <br /> THAT MATCHES <br /> YOUR STYLE
             </h1>
@@ -26,7 +26,7 @@ const Hero = () => {
             <div>
               <button
                 onClick={() => navigate("/collection")}
-                className="bg-black text-white px-10 py-2 rounded-full cursor-pointer"
+                className="bg-black text-white px-10 py-2 rounded-full cursor-pointer max-sm:w-full"
               >
                 Shop Now
               </button>
@@ -50,7 +50,7 @@ const Hero = () => {
             <img className="h-full w-full object-cover" src={assets.coverImage2} alt="" />
           </div>
         </div>
-        <div className="bg-black px-20 text-white flex justify-between h-[15%] items-center flex-wrap max-sm:px-5 max-sm:py-5 max-sm:gap-5 max-sm:justify-center max-sm:hidden absolute bottom-0 w-full z-10">
+        <div className="bg-black px-20 text-white flex justify-between max-sm:h-[10%] h-[15%] items-center flex-wrap max-sm:px-5 py-5 max-sm:gap-5 max-sm:justify-center absolute bottom-0 w-full z-10">
           <img
             src={assets.varsace}
             alt=""

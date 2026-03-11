@@ -10,3 +10,27 @@ body {
   scrollbar-width: none;
   font-family: sans-serif;
 }
+
+
+/* Slider track (black active line) */
+.rc-slider-track {
+  background-color: black !important;
+  height: 6px !important;
+}
+
+/* Slider background line */
+.rc-slider-rail {
+  background-color: #e5e5e5 !important;
+  height: 6px !important;
+}
+
+/* Slider handle */
+.rc-slider-handle {
+  background-color: black !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-top: -6px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+

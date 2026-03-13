@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="pt-20 px-20 pb-10 max-sm:p-5 bg-gray-200 mt-10 max-sm:mt-5 tracking-widest">
+    <div className="pt-20 px-20 pb-10 max-sm:p-5 bg-gray-200 mt-10 max-sm:mt-5 tracking-widest text-gray-600">
       <div className="flex justify-between flex-wrap gap-10 max-sm:flex-col">
         <div className="flex-2 flex flex-col gap-5">
           <Link to="/" className="text-4xl font-bold cursor-pointer">ZEN VY</Link>

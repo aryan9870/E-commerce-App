@@ -14,8 +14,8 @@ const Hero = () => {
         }}
       >
         <div className="p-20 flex flex-col gap-5 max-sm:h-[90%] h-[85%] justify-center max-sm:px-0 max-sm:py-5 max-sm:justify-start">
-          <div className="max-sm:px-5 max-sm:bg-[#F2F0F1] flex gap-10 flex-col">
-            <h1 className="text-5xl font-bold max-sm:text-4xl">
+          <div className="max-sm:px-5 max-sm:bg-[#F2F0F1] flex gap-5 flex-col">
+            <h1 className="text-4xl font-bold max-sm:text-3xl tracking-widest">
               FIND CLOTHES <br /> THAT MATCHES <br /> YOUR STYLE
             </h1>
             <p>

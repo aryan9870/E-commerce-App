@@ -5,7 +5,7 @@ import { products } from '../assets/assets'
 
 const Home = () => {
   return (
-    <div>
+    <div className='text-gray-600 tracking-wider'>
       <Hero />
       <ProductSection title="NEW ARRIVALS" products={products} />
       <div className='border border-gray-200 mx-20 my-10 max-sm:mx-5 max-sm:my-5'></div>

@@ -20,9 +20,9 @@ const Collection = () => {
   }, [openFilter]);
 
   return (
-    <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5">
+    <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">
       <div className="py-5 flex items-center">
-        <span className="text-gray-500">HOME</span> <IoIosArrowForward />
+        <span className="text-gray-400">HOME</span> <IoIosArrowForward />
         COLLECTION
       </div>
       <div className="flex">

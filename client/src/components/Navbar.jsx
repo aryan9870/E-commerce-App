@@ -13,19 +13,19 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5">
+    <div className="px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5 text-gray-600 tracking-wider">
       <div className="flex justify-between items-center border-b py-5 border-gray-200">
         <div
-          className="text-black font-bold text-4xl cursor-pointer flex items-center max-sm:text-2xl"
+          className="font-bold text-4xl cursor-pointer flex items-center max-sm:text-2xl"
         >
-          <FaBars />
+          <span className="sm:hidden"><FaBars /></span>
           <span onClick={() => navigate("/")} className="ml-5">ZEN VY</span>
         </div>
         <div className="flex gap-5 max-xl:hidden">
           <NavLink
             to="/"
             className={({ isActive }) =>
-              isActive ? "text-black" : "text-gray-500"
+              isActive ? "text-gray-600" : "text-gray-400"
             }
           >
             Home
@@ -33,7 +33,7 @@ const Navbar = () => {
           <NavLink
             to="/collection"
             className={({ isActive }) =>
-              isActive ? "text-black" : "text-gray-500"
+              isActive ? "text-gray-600" : "text-gray-400"
             }
           >
             Collection
@@ -41,7 +41,7 @@ const Navbar = () => {
           <NavLink
             to="/about"
             className={({ isActive }) =>
-              isActive ? "text-black" : "text-gray-500"
+              isActive ? "text-gray-600" : "text-gray-400"
             }
           >
             About
@@ -49,14 +49,14 @@ const Navbar = () => {
           <NavLink
             to="/contact"
             className={({ isActive }) =>
-              isActive ? "text-black" : "text-gray-500"
+              isActive ? "text-gray-600" : "text-gray-400"
             }
           >
             Contact Us
           </NavLink>
         </div>
         <div className="w-1/2 flex gap-2 items-center bg-gray-200 rounded-full px-5 py-2.5 shadow-sm max-xl:hidden">
-          <IoMdSearch className="text-xl text-gray-500" />
+          <IoMdSearch className="text-xl text-gray-400" />
           <input
             className="w-full bg-transparent outline-none"
             type="text"

@@ -3,14 +3,14 @@ import { assets } from "../assets/assets";
 
 const About = () => {
   return (
-    <div className="pt-20 mx-20 text-gray-600">
+    <div className="pt-20 mx-20 text-gray-600 tracking-wider">
       <div className="">
         <h1 className="text-center text-2xl my-10 font-semibold">
-          <span className="text-gray-500">ABOUT</span> US
+          <span className="text-gray-400">ABOUT</span> US
         </h1>
-        <div className="flex items-center justify-center gap-10">
+        <div className="flex items-center justify-center">
           <div className="w-1/2">
-            <img className="w-3/4" src={assets.aboutImage} alt="" />
+            <img className="w-2/3" src={assets.aboutImage} alt="" />
           </div>
           <div className="w-1/2 flex flex-col gap-5">
             <p>
@@ -28,7 +28,7 @@ const About = () => {
       </div>
       <div>
         <h3 className="text-2xl my-10 font-semibold">
-          <span className="text-gray-500">WHY</span> CHOOSE US
+          <span className="text-gray-400">WHY</span> CHOOSE US
         </h3>
         <div className="flex">
           <div className="border border-gray-200 flex-1 flex align-center justify-center flex-col gap-5 h-[300px] p-10">

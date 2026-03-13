@@ -8,9 +8,9 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center gap-2 flex-wrap">
-        <div className="text-2xl max-sm:hidden">
+        <div className="text-2xl max-sm:hidden font-semibold">
           <p>
-            <span className="text-gray-500">All</span> COLLECTIONS
+            <span className="text-gray-400">All</span> COLLECTIONS
           </p>
         </div>
         <button
@@ -28,11 +28,11 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
           </div>
         )}
         <div className="flex gap-2 items-center">
-          <p className="text-gray-500 text-sm max-sm:text-xs">
+          <p className="text-gray-400 text-sm max-sm:text-xs">
             Showing 1-10 of 100 Products
           </p>
           <div className="flex gap-2 items-center max-sm:hidden">
-            <p className="text-gray-500 text-sm">Sort by:</p>
+            <p className="text-gray-400 text-sm">Sort by:</p>
             <div>
               <select className="outline-none w-30" name="" id="">
                 <option value="">Most Popular</option>

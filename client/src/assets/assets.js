@@ -8,6 +8,7 @@ import vectorSmall from "./vectorSmall.png";
 import vectorBig from "./vectorBig.png";
 import coverImage2 from "./coverImage2.png";
 import aboutImage from "./aboutImage.png";
+import contactImage from "./contactImage.png";
 
 import product1 from "./product1.png";
 import product2 from "./product2.png";
@@ -37,6 +38,7 @@ export const assets = {
   vectorSmall,
   vectorBig,
   aboutImage,
+  contactImage,
 };
 
 export const products = [

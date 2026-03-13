@@ -204,3 +204,34 @@ export const products = [
     isFeatured: false,
   }
 ];
+
+
+export const cartItems = [
+    {
+      id: 1,
+      name: "Graphic T-shirt",
+      price: 145,
+      size: "Large",
+      color: "White",
+      qty: 1,
+      image: product1,
+    },
+    {
+      id: 2,
+      name: "Checkered Shirt",
+      price: 180,
+      size: "Medium",
+      color: "Red",
+      qty: 1,
+      image: product2,
+    },
+    {
+      id: 3,
+      name: "Skinny Fit Jeans",
+      price: 240,
+      size: "Large",
+      color: "Blue",
+      qty: 1,
+      image: product3,
+    },
+  ]

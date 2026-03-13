@@ -7,6 +7,7 @@ import zara from "./zara.png";
 import vectorSmall from "./vectorSmall.png";
 import vectorBig from "./vectorBig.png";
 import coverImage2 from "./coverImage2.png";
+import aboutImage from "./aboutImage.png";
 
 import product1 from "./product1.png";
 import product2 from "./product2.png";
@@ -35,6 +36,7 @@ export const assets = {
   zara,
   vectorSmall,
   vectorBig,
+  aboutImage,
 };
 
 export const products = [

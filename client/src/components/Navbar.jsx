@@ -15,11 +15,13 @@ const Navbar = () => {
   return (
     <div className="px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5 text-gray-600 tracking-wider">
       <div className="flex justify-between items-center border-b py-5 border-gray-200">
-        <div
-          className="font-bold text-4xl cursor-pointer flex items-center max-sm:text-2xl"
-        >
-          <span className="sm:hidden"><FaBars /></span>
-          <span onClick={() => navigate("/")} className="ml-5">ZEN VY</span>
+        <div className="font-bold text-4xl cursor-pointer flex items-center max-sm:text-2xl">
+          <span className="sm:hidden">
+            <FaBars />
+          </span>
+          <span onClick={() => navigate("/")} className="ml-5">
+            ZEN VY
+          </span>
         </div>
         <div className="flex gap-5 max-xl:hidden">
           <NavLink
@@ -55,7 +57,7 @@ const Navbar = () => {
             Contact Us
           </NavLink>
         </div>
-        <div className="w-1/2 flex gap-2 items-center bg-gray-200 rounded-full px-5 py-2.5 shadow-sm max-xl:hidden">
+        <div className="w-[40%] flex gap-2 items-center bg-gray-200 rounded-full px-5 py-2.5 shadow-sm max-xl:hidden">
           <IoMdSearch className="text-xl text-gray-400" />
           <input
             className="w-full bg-transparent outline-none"
@@ -63,15 +65,20 @@ const Navbar = () => {
             placeholder="Search for products..."
           />
         </div>
-        <div className="flex gap-5 font-medium">
+        <div className="flex gap-5 font-medium items-center">
           <PiShoppingCartSimpleBold
             onClick={() => navigate("/cart")}
             className="text-2xl cursor-pointer"
           />
-          <LuCircleUserRound
-            onClick={() => setOpen(!open)}
-            className="text-2xl cursor-pointer"
-          />
+          <span className="hidden">
+            <LuCircleUserRound
+              onClick={() => setOpen(!open)}
+              className="text-2xl cursor-pointer"
+            />
+          </span>
+          <NavLink to="/login" className="bg-black text-white px-3 py-1 rounded-sm hover:bg-gray-800 transition">
+            Login
+          </NavLink>
           {/* Dropdown Menu */}
           {open && (
             <div className="absolute top-20 right-20 w-40 bg-white shadow-sm rounded max-sm:right-10">

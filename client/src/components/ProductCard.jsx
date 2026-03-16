@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 function ProductCard({ product }) {
   const navigate = useNavigate();
   return (
-    <div onClick={() => navigate(`/product/${product._id}`)} className="cursor-pointer">
-      <img className="w-64" src={product.images[0]} alt="" />
+  <div onClick={() => {navigate(`/product/${product._id}`); scrollTo(0, 0)}} className="cursor-pointer">
+      <img className="w-64 h-64" src={product.images[0]} alt="" />
       <div className="mt-2 flex flex-col gap-2">
         <p className="font-semibold">{product.name}</p> 
         <div>

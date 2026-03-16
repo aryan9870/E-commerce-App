@@ -18,6 +18,9 @@ import product5 from "./product5.png";
 import product6 from "./product6.png";
 import product7 from "./product7.png";
 import product8 from "./product8.png";
+import product9_1 from "./product9_1.png";
+import product9_3 from "./product9_3.png";
+import product9_4 from "./product9_4.png";
 
 export const assets = {
   product1,
@@ -28,6 +31,9 @@ export const assets = {
   product6,
   product7,
   product8,
+  product9_1,
+  product9_3,
+  product9_4,
   calvinKlein,
   coverImage,
   coverImage2,
@@ -44,16 +50,16 @@ export const assets = {
 export const products = [
   {
     _id: "1",
-    name: "Checkered Shirt",
-    description: "Comfortable cotton checkered shirt for casual wear.",
+    name: "One Life Graphic T-shirt",
+    description: "This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Shirts",
-    price: 260,
-    discountPrice: 240,
+    subCategory: "T-Shirts",
+    price: 300,
+    discountPrice: 260,
     sizes: ["S", "M", "L", "XL"],
     stock: 50,
-    images: [product1],
+    images: [product9_1, product9_4, product9_3],
     ratings: 4.5,
     numOfReviews: 12,
     reviews: [],
@@ -121,7 +127,7 @@ export const products = [
     description: "Comfortable cotton checkered shirt for casual wear",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Shirts",
+    subCategory: "Jeans",
     price: 260,
     discountPrice: 240,
     size: ["S", "M", "L", "XL"],
@@ -138,7 +144,7 @@ export const products = [
     description: "Stylish slim fit jeans for everyday wear",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Jeans",
+    subCategory: "T-Shirts",
     price: 400,
     discountPrice: 360,
     size: ["M", "L", "XL"],
@@ -156,7 +162,7 @@ export const products = [
     description: "Soft cotton graphic t-shirt with modern print",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Tshirts",
+    subCategory: "Jeans",
     price: 200,
     discountPrice: 170,
     size: ["S", "M", "L"],
@@ -174,7 +180,7 @@ export const products = [
     description: "Warm fleece hoodie perfect for winter",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Hoodies",
+    subCategory: "T-Shirts",
     price: 500,
     discountPrice: 450,
     size: ["M", "L", "XL"],
@@ -192,12 +198,12 @@ export const products = [
     description: "Premium polo t-shirt for smart casual look",
     brand: "Zenvy",
     category: "Men",
-    subCategory: "Tshirts",
+    subCategory: "Shirts",
     price: 320,
     discountPrice: 290,
     size: ["S", "M", "L", "XL"],
     stock: 45,
-    images: [product6],
+    images: [product1],
     ratings: 4.4,
     numOfReviews: 10,
     reviews: [],

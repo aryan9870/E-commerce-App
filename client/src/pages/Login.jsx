@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const login = useAuthStore((state) => state.login);
   const API_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,13 +28,15 @@ const Login = () => {
       );
       console.log(res.data);
       login(res.data.user, res.data.token);
+      toast.success(res.data.message);
+      navigate("/");
     } catch (error) {
       console.log(error.response);
       if(error.response.data.errors){
-        console.log(error.response.data.errors[0].message);
+        toast.error(error.response.data.errors[0].message);
       }
       else{
-        console.log(error.response.data.message);
+        toast.error(error.response.data.message);
       }
     }
   };

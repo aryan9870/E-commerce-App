@@ -11,10 +11,12 @@ import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
     <>
+    <Toaster />
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />

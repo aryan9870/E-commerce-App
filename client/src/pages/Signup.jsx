@@ -28,7 +28,7 @@ const Signup = () => {
         { withCredentials: true },
       );
       console.log(res.data);
-      signup(res.data.user, res.data.token);
+      signup(res.data.user);
       toast.success(res.data.message);
       navigate("/");
     } catch (error) {

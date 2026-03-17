@@ -1,35 +1,52 @@
 import { create } from "zustand";
+import axios from "axios";
 
-const useAuthStore = create(
-  (set) => ({
-    user: null,
-    token: null,
-    isLoggedIn: false,
+const API_URL = import.meta.env.VITE_API_URL;
 
-    login: (userData, token) =>
-      set({
-        user: userData,
-        token,
-        isLoggedIn: true,
-      }),
+const useAuthStore = create((set) => ({
+  user: null,
+  isLoggedIn: false,
+  isCheckingAuth: true,
 
-    signup: (userData, token) =>
-      set({
-        user: userData,
-        token,
-        isLoggedIn: true,
-      }),
+  login: (userData) =>
+    set({
+      user: userData,
+      isLoggedIn: true,
+    }),
 
-    logout: () =>
+  signup: (userData) =>
+    set({
+      user: userData,
+      isLoggedIn: true,
+    }),
+
+  logout: () =>
+    set({
+      user: null,
+      isLoggedIn: false,
+    }),
+
+  checkAuth: async () => {
+    try {
+      const res = await axios.get(`${API_URL}/users/is-auth`, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+      if (res.data.success) {
+        set({
+          user: res.data.user,
+          isLoggedIn: true,
+        });
+      }
+    } catch (error) {
       set({
         user: null,
-        token: null,
         isLoggedIn: false,
-      }),
-  }),
-  {
-    name: "auth-storage",
+      });
+    } finally {
+      set({ isCheckingAuth: false });
+    }
   },
-);
+}));
 
 export default useAuthStore;

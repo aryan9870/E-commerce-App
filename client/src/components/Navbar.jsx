@@ -42,6 +42,9 @@ const Navbar = () => {
     }
   };
 
+  const isCheckingAuth = useAuthStore((state) => state.isCheckingAuth);
+  if (isCheckingAuth) return null;
+
   return (
     <div className="px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5 text-gray-600 tracking-wider">
       <div className="flex justify-between items-center border-b py-5 border-gray-200">

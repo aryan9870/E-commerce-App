@@ -12,8 +12,16 @@ import Product from "./pages/Product";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { Toaster } from "react-hot-toast";
+import useAuthStore from "./store/useAuthStore";
+import { useEffect } from "react";
 
 const App = () => {
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <>
     <Toaster />

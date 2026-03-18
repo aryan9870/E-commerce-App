@@ -8,25 +8,57 @@ import { FaPlus } from "react-icons/fa6";
 import ProductSection from "../components/ProductSection";
 import { FiCheck } from "react-icons/fi";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Product = () => {
   const { id } = useParams();
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const product = products.find((product) => product._id === id);
+  // fetch product
+  const [product, setProduct] = useState(null);
+  const fetchProduct = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/products/${id}`, {
+        withCredentials: true,
+      });
+      setProduct(response.data.product);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
 
-  const [mainImage, setMainImage] = useState(product.images[0]);
-  const [quantity, setQuantity] = useState(1);
-
+  // image handler
+  const [mainImage, setMainImage] = useState(product?.images[0]);
   const handleImageClick = (image) => {
     setMainImage(image);
   };
 
-  useEffect(() => {
-    setMainImage(product.images[0]);
-    setQuantity(1);
-  }, [id]);
-  
+  // quantity state
+  const [quantity, setQuantity] = useState(1);
 
+  // fetch similar products
+  const [similarProducts, setSimilarProducts] = useState([]);
+  const fetchSimilarProducts = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/products/${id}/similar`, {
+        withCredentials: true,
+      });
+      setSimilarProducts(response.data.similarProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchSimilarProducts();
+  }, [id]);
+
+  // loading state
+  if (!product) return <div className="mt-40">Loading...</div>;
+
+  // render product
   return (
     <div className="mt-20 md:mx-20 mx-5 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">
       <div className="py-5 flex items-center">
@@ -38,11 +70,21 @@ const Product = () => {
         <div className="flex gap-5 max-sm:flex-col-reverse max-md:w-full">
           <div className=" justify-between flex sm:flex-col">
             {product.images.map((image, idx) => (
-              <img onClick={() => handleImageClick(image)} key={idx} className="w-30 max-sm:w-24 cursor-pointer" src={image} alt="" />
+              <img
+                onClick={() => handleImageClick(image)}
+                key={idx}
+                className="w-30 max-sm:w-24 cursor-pointer"
+                src={image}
+                alt=""
+              />
             ))}
           </div>
           <div className=" max-md:w-full">
-            <img className="h-full w-full" src={mainImage} alt="" />
+            <img
+              className="h-full w-full"
+              src={mainImage || product.images[0]}
+              alt=""
+            />
           </div>
         </div>
         <div className="flex-1 px-10 max-md:px-0 max-md:gap-5 flex flex-col justify-between max-md:w-full">
@@ -109,43 +151,33 @@ const Product = () => {
           <div className=" flex flex-col gap-2">
             <p>Choose Size</p>
             <div className="flex gap-5">
-              <label className="cursor-pointer">
-                <input type="radio" name="size" className="peer hidden" />
-                <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                  Small
-                </span>
-              </label>
-              <label className="cursor-pointer">
-                <input type="radio" name="size" className="peer hidden" />
-                <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                  Medium
-                </span>
-              </label>
-              <label className="cursor-pointer">
-                <input type="radio" name="size" className="peer hidden" />
-                <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                  Large
-                </span>
-              </label>
-              <label className="cursor-pointer">
-                <input type="radio" name="size" className="peer hidden" />
-                <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                  X-Large
-                </span>
-              </label>
+              {product.sizes.map((size, idx) => (
+                <label key={idx} className="cursor-pointer">
+                  <input type="radio" name="size" className="peer hidden" />
+                  <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
+                    {size}
+                  </span>
+                </label>
+              ))}
             </div>
           </div>
           <hr className="text-gray-200" />
           <div className="flex gap-5">
             {/* QUANTITY */}
             <div className="flex items-center justify-center bg-gray-100 rounded-full px-4 py-1 gap-3 flex-1">
-              <button onClick={() => setQuantity(quantity - 1)} className="text-lg font-bold cursor-pointer">
+              <button
+                onClick={() => setQuantity(quantity - 1)}
+                className="text-lg font-bold cursor-pointer"
+              >
                 <TiMinus size={15} />
               </button>
 
               <span className="font-medium">{quantity}</span>
 
-              <button onClick={() => setQuantity(quantity + 1)} className="text-lg font-bold cursor-pointer">
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="text-lg font-bold cursor-pointer"
+              >
                 <FaPlus size={15} />
               </button>
             </div>
@@ -158,14 +190,7 @@ const Product = () => {
       <div className="my-10">
         <ProductSection
           title="You might also like"
-          products={products
-            .filter((item) => {
-              return (
-                item.subCategory === product.subCategory &&
-                item._id !== product._id
-              );
-            })
-            .slice(0, 4)}
+          products={similarProducts}
         />
       </div>
     </div>

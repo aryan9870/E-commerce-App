@@ -189,3 +189,20 @@ export const deleteReview = async (req, res, next) => {
     message: "Review deleted successfully.",
   });
 };
+
+// get similar products
+export const getSimilarProducts = async (req, res, next) => {
+  const productId = req.params.id;
+  const product = await Product.findById(productId);
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
+  const similarProducts = await Product.find({
+    subCategory: product.subCategory,
+    _id: { $ne: productId },
+  }).limit(4);
+  res.status(200).json({
+    success: true,
+    similarProducts,
+  });
+};

@@ -1,5 +1,5 @@
 import express from "express";
-import { getProducts, createProduct, getProductById, deleteProduct, addReview, deleteReview } from "../controllers/productController.js";
+import { getProducts, createProduct, getProductById, deleteProduct, addReview, deleteReview, getSimilarProducts } from "../controllers/productController.js";
 import { productSchema } from "../validations/productValidation.js";
 import { reviewSchema } from "../validations/reviewValidation.js";
 import validate from "../middlewares/validate.js";
@@ -16,6 +16,8 @@ router.delete("/:id", isLoggedIn, isAdmin, deleteProduct);
 
 router.post("/:id/review", isLoggedIn, validate(reviewSchema), addReview);
 router.delete("/:id/review/:reviewId", isLoggedIn, deleteReview);
+
+router.get("/:id/similar", getSimilarProducts);
 
 
 export default router;

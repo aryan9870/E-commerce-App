@@ -1,10 +1,40 @@
 import React from "react";
 import { LuSlidersVertical } from "react-icons/lu";
-import { products } from "../assets/assets";
 import ProductCard from "./ProductCard";
 import Filter from "./Filter";
+import { useProductStore } from "../store/useProductStore";
+import { useEffect, useState } from "react";
+import { IoArrowForwardOutline, IoArrowBackOutline } from "react-icons/io5";
+
 
 const ProductGrid = ({ setOpenFilter, openFilter }) => {
+
+  const { products, fetchProducts } = useProductStore();
+
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 9;
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1));
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center gap-2 flex-wrap">
@@ -29,7 +59,7 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
         )}
         <div className="flex gap-2 items-center">
           <p className="text-gray-400 text-sm max-sm:text-xs">
-            Showing 1-10 of 100 Products
+            Showing 1-9 of {products.length} Products
           </p>
           <div className="flex gap-2 items-center max-sm:hidden">
             <p className="text-gray-400 text-sm">Sort by:</p>
@@ -47,9 +77,29 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
       </div>
       {/* Product Container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 max-sm:justify-items-center max-sm:mt-5">
-        {products.map((product) => (
+        {currentProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
+      </div>
+
+      <hr className="my-5 border-gray-200"/>
+      {/* Pagination */}
+      <div className="flex justify-between items-center">
+        <button disabled={currentPage === 1}  onClick={handlePreviousPage} className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"><IoArrowBackOutline /> <span>Previous</span></button>
+        <div className="flex gap-2">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`h-10 w-10 flex justify-center items-center rounded-sm cursor-pointer ${
+                currentPage === index + 1 ? "bg-gray-200" : ""
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+        <button disabled={currentPage === totalPages} onClick={handleNextPage} className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"><span className="">Next</span> <IoArrowForwardOutline /></button>
       </div>
     </div>
   );

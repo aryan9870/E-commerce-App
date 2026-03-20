@@ -6,15 +6,52 @@ import { useProductStore } from "../store/useProductStore";
 import { useEffect, useState } from "react";
 import { IoArrowForwardOutline, IoArrowBackOutline } from "react-icons/io5";
 
-
 const ProductGrid = ({ setOpenFilter, openFilter }) => {
+  const { products, fetchProducts, filters } = useProductStore();
+  console.log(filters.type);
 
-  const { products, fetchProducts } = useProductStore();
+  // Filter
+  const filteredProducts = products.filter((product) => {
+    // category filter
+    if (
+      filters.category.length > 0 &&
+      !filters.category.includes(product.category.toLowerCase())
+    ) {
+      return false;
+    }
+
+    // type filter
+    if (
+      filters.type.length > 0 &&
+      !filters.type.includes(product.subCategory)
+    ) {
+      return false;
+    }
+
+    // price filter
+    if (
+      filters.price.length > 0 &&
+      (product.discountPrice < filters.price[0] ||
+        product.discountPrice > filters.price[1])
+    ) {
+      return false;
+    }
+
+    // size filter
+    if (
+      filters.sizes.length > 0 &&
+      !product.sizes.some((size) => filters.sizes.includes(size))
+    ) {
+      return false;
+    }
+
+    return true;
+  });
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
   };
@@ -29,7 +66,7 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
-  const currentProducts = products.slice(startIndex, endIndex);
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchProducts();
@@ -59,7 +96,7 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
         )}
         <div className="flex gap-2 items-center">
           <p className="text-gray-400 text-sm max-sm:text-xs">
-            Showing 1-9 of {products.length} Products
+            Showing 1-9 of {filteredProducts.length} Products
           </p>
           <div className="flex gap-2 items-center max-sm:hidden">
             <p className="text-gray-400 text-sm">Sort by:</p>
@@ -82,10 +119,16 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
         ))}
       </div>
 
-      <hr className="my-5 border-gray-200"/>
+      <hr className="my-5 border-gray-200" />
       {/* Pagination */}
       <div className="flex justify-between items-center">
-        <button disabled={currentPage === 1}  onClick={handlePreviousPage} className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"><IoArrowBackOutline /> <span>Previous</span></button>
+        <button
+          disabled={currentPage === 1}
+          onClick={handlePreviousPage}
+          className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"
+        >
+          <IoArrowBackOutline /> <span>Previous</span>
+        </button>
         <div className="flex gap-2">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
@@ -99,7 +142,13 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
             </button>
           ))}
         </div>
-        <button disabled={currentPage === totalPages} onClick={handleNextPage} className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"><span className="">Next</span> <IoArrowForwardOutline /></button>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={handleNextPage}
+          className="border px-5 py-2 rounded-sm cursor-pointer border-gray-200 flex items-center gap-2 disabled:opacity-50"
+        >
+          <span className="">Next</span> <IoArrowForwardOutline />
+        </button>
       </div>
     </div>
   );

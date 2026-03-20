@@ -31,7 +31,6 @@ const useAuthStore = create((set) => ({
       const res = await axios.get(`${API_URL}/users/is-auth`, {
         withCredentials: true,
       });
-      console.log(res.data);
       if (res.data.success) {
         set({
           user: res.data.user,

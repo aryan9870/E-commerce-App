@@ -9,6 +9,7 @@ import ProductSection from "../components/ProductSection";
 import { FiCheck } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Product = () => {
   const { id } = useParams();
@@ -36,8 +37,7 @@ const Product = () => {
     setMainImage(image);
   };
 
-  // quantity state
-  const [quantity, setQuantity] = useState(1);
+  
 
   // fetch similar products
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -51,9 +51,38 @@ const Product = () => {
       console.log(error);
     }
   };
+  
   useEffect(() => {
     fetchSimilarProducts();
   }, [id]);
+
+  // Add to Cart
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+
+  const addToCart = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/carts`, {
+        productId: product._id,
+        quantity: quantity,
+        size: size,
+        color: color,
+      }, {
+        withCredentials: true,
+      });
+      toast.success(response.data.message);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response);
+      if(error.response.data.errors){
+        toast.error(error.response.data.errors[0].message);
+      }
+      else{
+        toast.error(error.response.data.message);
+      }
+    }
+  };
 
   // loading state
   if (!product) return <div className="mt-40">Loading...</div>;
@@ -114,7 +143,7 @@ const Product = () => {
             <p>Select Colors</p>
             <div className="flex gap-4">
               <label className="cursor-pointer">
-                <input type="radio" name="color" className="peer hidden" />
+                <input onChange={() => setColor("brown")} type="radio" name="color" className="peer hidden" />
 
                 <div
                   className="w-10 h-10 rounded-full bg-yellow-900 
@@ -125,7 +154,7 @@ const Product = () => {
               </label>
 
               <label className="cursor-pointer">
-                <input type="radio" name="color" className="peer hidden" />
+                <input onChange={() => setColor("green")} type="radio" name="color" className="peer hidden" />
 
                 <div
                   className="w-10 h-10 rounded-full bg-green-800 
@@ -136,7 +165,7 @@ const Product = () => {
               </label>
 
               <label className="cursor-pointer">
-                <input type="radio" name="color" className="peer hidden" />
+                <input onChange={() => setColor("indigo")} type="radio" name="color" className="peer hidden" />
 
                 <div
                   className="w-10 h-10 rounded-full bg-indigo-900 
@@ -153,9 +182,9 @@ const Product = () => {
             <div className="flex gap-5">
               {product.sizes.map((size, idx) => (
                 <label key={idx} className="cursor-pointer">
-                  <input type="radio" name="size" className="peer hidden" />
+                  <input onChange={() => setSize(size)} type="radio" name="size" className="peer hidden" />
                   <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                    {size}
+                    {size === "XXS" ? "XX-Small" : size === "XS" ? "X-Small" : size === "S" ? "Small" : size === "M" ? "Medium" : size === "L" ? "Large" : size === "XL" ? "X-Large" : size === "XXL" ? "XX-Large" : size === "3XL" ? "3X-Large" : size === "4XL" ? "4X-Large" : size}
                   </span>
                 </label>
               ))}
@@ -166,7 +195,7 @@ const Product = () => {
             {/* QUANTITY */}
             <div className="flex items-center justify-center bg-gray-100 rounded-full px-4 py-1 gap-3 flex-1">
               <button
-                onClick={() => setQuantity(quantity - 1)}
+                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
                 className="text-lg font-bold cursor-pointer"
               >
                 <TiMinus size={15} />
@@ -175,13 +204,13 @@ const Product = () => {
               <span className="font-medium">{quantity}</span>
 
               <button
-                onClick={() => setQuantity(quantity + 1)}
+                onClick={() => quantity < 10 && setQuantity(quantity + 1)}
                 className="text-lg font-bold cursor-pointer"
               >
                 <FaPlus size={15} />
               </button>
             </div>
-            <button className="bg-black py-2 text-white flex-4 rounded-full cursor-pointer">
+            <button onClick={addToCart} className="bg-black py-2 text-white flex-4 rounded-full cursor-pointer">
               Add to Cart
             </button>
           </div>

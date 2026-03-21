@@ -6,11 +6,7 @@ import ErrorHandler from "../utils/errorHandler.js";
 export const addToCart = async (req, res, next) => {
 
     const userId = req.user._id;
-    const { productId } = req.body;
-
-    if(!productId) {
-        return next(new ErrorHandler("Product is required", 400));
-    }
+    const { productId, quantity, size, color } = req.body;
   
     // find user's cart
     let cart = await Cart.findOne({ user: userId });
@@ -23,6 +19,9 @@ export const addToCart = async (req, res, next) => {
         items: [
           {
             product: productId,
+            quantity: quantity,
+            size: size,
+            color: color,
           }
         ]
       });
@@ -36,8 +35,8 @@ export const addToCart = async (req, res, next) => {
   
       for (let item of cart.items) {
   
-        if (item.product.toString() === productId) {
-          item.quantity++;
+        if (item.product.toString() === productId && item.size.toLowerCase() === size.toLowerCase() && item.color.toLowerCase() === color.toLowerCase()) {
+          item.quantity += quantity;
           productExists = true;
           break;
         }
@@ -48,6 +47,9 @@ export const addToCart = async (req, res, next) => {
       if (!productExists) {
         cart.items.push({
           product: productId,
+          quantity: quantity,
+          size: size,
+          color: color,
         });
       }
   

@@ -8,7 +8,6 @@ import { IoArrowForwardOutline, IoArrowBackOutline } from "react-icons/io5";
 
 const ProductGrid = ({ setOpenFilter, openFilter }) => {
   const { products, fetchProducts, filters } = useProductStore();
-  console.log(filters.type);
 
   // Filter
   const filteredProducts = products.filter((product) => {
@@ -44,7 +43,6 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
     ) {
       return false;
     }
-
     return true;
   });
 
@@ -71,6 +69,10 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   return (
     <div className="flex flex-col gap-2">

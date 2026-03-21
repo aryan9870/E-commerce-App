@@ -44,7 +44,14 @@ const Filter = ({ setOpenFilter, openFilter }) => {
     });
   };
 
-  
+  const clearFilter = () => {
+    setFilters({
+      category: [],
+      type: [],
+      price: [0, 2000],
+      sizes: [],
+    });
+  };
 
   return (
     <div className="border rounded-2xl border-gray-300 h-fit">
@@ -93,7 +100,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
         <ul className="py-2 mx-3 border-b border-gray-300">
           <li className="">
             <label className="flex justify-between items-center py-1 cursor-pointer">
-              <input onChange={() => handleTypeChange("T-Shirts")} type="checkbox" className="peer hidden" />
+              <input checked={filters.type.includes("T-Shirts")} onChange={() => handleTypeChange("T-Shirts")} type="checkbox" className="peer hidden" />
               <span className="text-gray-400 peer-checked:text-black">
                 T-Shirt
               </span>
@@ -102,7 +109,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
           </li>
           <li className="">
             <label className="flex justify-between items-center py-1 cursor-pointer">
-              <input onChange={() => handleTypeChange("Shirts")} type="checkbox" className="peer hidden" />
+              <input checked={filters.type.includes("Shirts")} onChange={() => handleTypeChange("Shirts")} type="checkbox" className="peer hidden" />
               <span className="text-gray-400 peer-checked:text-black">
                 Shirt
               </span>
@@ -111,7 +118,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
           </li>
           <li className="">
             <label className="flex justify-between items-center py-1 cursor-pointer">
-              <input onChange={() => handleTypeChange("Jeans")} type="checkbox" className="peer hidden" />
+              <input checked={filters.type.includes("Jeans")} onChange={() => handleTypeChange("Jeans")} type="checkbox" className="peer hidden" />
               <span className="text-gray-400 peer-checked:text-black">
                 Jeans
               </span>
@@ -130,7 +137,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
           range
           min={0}
           max={2000}
-          defaultValue={[filters.price[0], filters.price[1]]}
+          value={[filters.price[0], filters.price[1]]}
           className="w-full cursor-pointer"
         />
         <div className="flex justify-between text-sm mt-2 px-5">
@@ -200,7 +207,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
           </span>
         </label>
       </div>
-      <button className="font-extralight text-sm py-2 flex justify-center items-center w-4/5 mx-auto bg-black text-white rounded-full my-5 cursor-pointer">
+      <button disabled={filters.category.length === 0 && filters.type.length === 0 && filters.price[0] === 0 && filters.price[1] === 2000 && filters.sizes.length === 0}   onClick={clearFilter} className="font-extralight text-sm py-2 flex justify-center items-center w-4/5 mx-auto bg-black text-white rounded-full my-5 cursor-pointer disabled:opacity-50">
         Clear Filter
       </button>
     </div>

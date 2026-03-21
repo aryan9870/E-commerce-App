@@ -1,10 +1,12 @@
 import React from "react";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { MdOutlineLocalOffer } from "react-icons/md";
+import useCartStore from "../store/useCartStore";
 
 const OrderSummary = () => {
-  const subtotal = 565;
-  const discount = 113;
+  const { cart } = useCartStore();
+  const subtotal = cart?.items?.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const discount = subtotal * 0.2;
   const delivery = 15;
 
   const total = subtotal - discount + delivery;

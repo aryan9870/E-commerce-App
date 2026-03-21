@@ -1,36 +1,40 @@
-import { useState } from "react";
-import { cartItems } from "../assets/assets";
 import { TiMinus } from "react-icons/ti";
 import { FaPlus } from "react-icons/fa6";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import useCartStore from "../store/useCartStore";
+import { useEffect } from "react";
 
 
 const CartItems = () => {
-  const [cart, setCart] = useState(cartItems);
+  const { cart, getCart } = useCartStore();
+
+  useEffect(() => {
+    getCart();
+  }, []);
 
   return (
     <div className="rounded-xl border px-5 border-gray-200">
-      {cart.map((item) => (
+      {cart?.items?.map((item) => (
         <div
-          key={item.id}
+          key={item._id}
           className="flex items-center justify-between border-b py-5 border-gray-200 h-36 max-md:relative"
         >
           {/* LEFT SECTION */}
           <div className="flex gap-5 items-center justify-start md:flex-3 h-full">
             <img
-              src={item.image}
-              alt={item.name}
+              src={item.product.images[0]}
+              alt={item.product.name}
               className="w-26 h-26 object-cover rounded-lg bg-gray-200 max-md:h-20 max-md:w-20"
             />
 
             <div>
-              <h2 className="font-semibold max-md:text-sm">{item.name}</h2>
+              <h2 className="font-semibold max-md:text-sm">{item.product.name}</h2>
 
               <p className="text-gray-500 text-sm max-md:text-xs">Size: {item.size}</p>
 
               <p className="text-gray-500 text-sm max-md:text-xs">Color: {item.color}</p>
 
-              <p className="font-bold max-md:text-sm mt-2">${item.price}</p>
+              <p className="font-bold max-md:text-sm mt-2">${item.product.price}</p>
             </div>
           </div>
 
@@ -50,7 +54,7 @@ const CartItems = () => {
                 <TiMinus size={15} />
               </button>
 
-              <span className="font-medium">{item.qty}</span>
+              <span className="font-medium">{item.quantity}</span>
 
               <button
                 className="text-lg font-bold cursor-pointer"

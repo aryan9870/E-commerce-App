@@ -5,10 +5,12 @@ import useAuthStore from "../store/useAuthStore";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/useCartStore";
 
 const Signup = () => {
 
   const signup = useAuthStore((state) => state.signup);
+  const { getCart } = useCartStore();
   const API_URL = import.meta.env.VITE_API_URL;
   const [user, setUser] = useState({
     name: "",
@@ -30,6 +32,7 @@ const Signup = () => {
       console.log(res.data);
       signup(res.data.user);
       toast.success(res.data.message);
+      await getCart();
       navigate("/");
     } catch (error) {
       console.log(error.response);

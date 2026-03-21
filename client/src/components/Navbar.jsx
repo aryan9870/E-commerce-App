@@ -4,7 +4,7 @@ import { LuCircleUserRound } from "react-icons/lu";
 import { IoMdSearch } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiLogIn } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
@@ -12,6 +12,8 @@ import { FaBars } from "react-icons/fa6";
 import useAuthStore from "../store/useAuthStore";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useCartStore from "../store/useCartStore";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,31 +21,36 @@ const Navbar = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const logout = useAuthStore((state) => state.logout);
   const API_URL = import.meta.env.VITE_API_URL;
-
+  const { cart, getCart } = useCartStore();
   const handleLogout = async () => {
     try {
-      const res = await axios.get(
-        `${API_URL}/users/logout`,
-        { withCredentials: true },
-      );
-      if(res.data.success === true){
+      const res = await axios.get(`${API_URL}/users/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success === true) {
         logout();
         toast.success(res.data.message);
         setOpen(false);
       }
     } catch (error) {
       console.log(error.response);
-      if(error.response.data.errors){
+      if (error.response.data.errors) {
         toast.error(error.response.data.errors[0].message);
-      }
-      else{
+      } else {
         toast.error(error.response.data.message);
       }
     }
   };
 
   const isCheckingAuth = useAuthStore((state) => state.isCheckingAuth);
-  if (isCheckingAuth) return null;
+
+
+  useEffect(() => {
+    getCart();
+  }, []);
+
+
+  if (isCheckingAuth || !cart) return null;
 
   return (
     <div className="px-20 fixed top-0 left-0 right-0 z-100 bg-white max-sm:px-5 text-gray-600 tracking-wider">
@@ -99,11 +106,15 @@ const Navbar = () => {
           />
         </div>
         <div className="flex gap-5 font-medium items-center">
-          <PiShoppingCartSimpleBold
-            onClick={() => navigate("/cart")}
-            className="text-2xl cursor-pointer"
-          />
-
+          <div className="relative">
+            <PiShoppingCartSimpleBold
+              onClick={() => navigate("/cart")}
+              className="text-2xl cursor-pointer"
+            />
+            {cart?.items?.length > 0 && <span className="absolute -top-4 -right-4 bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+              {cart?.items?.length}
+            </span>}
+          </div>
           {isLoggedIn ? (
             <span>
               <LuCircleUserRound
@@ -132,7 +143,6 @@ const Navbar = () => {
                     >
                       <span>Logout</span> <FiLogIn />
                     </li>
-                    
                   </ul>
                 </div>
               )}

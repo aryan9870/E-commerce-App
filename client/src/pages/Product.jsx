@@ -9,10 +9,11 @@ import ProductSection from "../components/ProductSection";
 import { FiCheck } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import useCartStore from "../store/useCartStore";
 
 const Product = () => {
   const { id } = useParams();
+  const addToCart = useCartStore((state) => state.addToCart);
   const API_URL = import.meta.env.VITE_API_URL;
 
   // fetch product
@@ -60,29 +61,6 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
-
-  const addToCart = async () => {
-    try {
-      const response = await axios.post(`${API_URL}/carts`, {
-        productId: product._id,
-        quantity: quantity,
-        size: size,
-        color: color,
-      }, {
-        withCredentials: true,
-      });
-      toast.success(response.data.message);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error.response);
-      if(error.response.data.errors){
-        toast.error(error.response.data.errors[0].message);
-      }
-      else{
-        toast.error(error.response.data.message);
-      }
-    }
-  };
 
   // loading state
   if (!product) return <div className="mt-40">Loading...</div>;
@@ -210,7 +188,7 @@ const Product = () => {
                 <FaPlus size={15} />
               </button>
             </div>
-            <button onClick={addToCart} className="bg-black py-2 text-white flex-4 rounded-full cursor-pointer">
+            <button onClick={() => addToCart(product._id, quantity, size, color)} className="bg-black py-2 text-white flex-4 rounded-full cursor-pointer">
               Add to Cart
             </button>
           </div>

@@ -5,12 +5,14 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/useCartStore";
 
 const Login = () => {
   const login = useAuthStore((state) => state.login);
   const API_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { getCart } = useCartStore();
 
   const navigate = useNavigate();
 
@@ -29,6 +31,7 @@ const Login = () => {
       console.log(res.data);
       login(res.data.user);
       toast.success(res.data.message);
+      await getCart();
       navigate("/");
     } catch (error) {
       console.log(error.response);

@@ -5,6 +5,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { IoClose } from "react-icons/io5";
 import { useProductStore } from "../store/useProductStore";
+import toast from "react-hot-toast";
 
 
 const Filter = ({ setOpenFilter, openFilter }) => {
@@ -51,6 +52,7 @@ const Filter = ({ setOpenFilter, openFilter }) => {
       price: [0, 2000],
       sizes: [],
     });
+    toast.success("Filters cleared");
   };
 
   return (

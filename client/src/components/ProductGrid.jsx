@@ -46,10 +46,30 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
     return true;
   });
 
+
+  // Sort
+  const [sortOption, setSortOption] = useState("newest");
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortOption === "newest") {
+      
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+    if (sortOption === "rating") {
+      return b.ratings - a.ratings;
+    }
+    if (sortOption === "low-high") {
+      return a.discountPrice - b.discountPrice;
+    }
+    if (sortOption === "high-low") {
+      return b.discountPrice - a.discountPrice;
+    }
+    return 0;
+  });
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 9;
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(1, prevPage - 1));
   };
@@ -64,7 +84,7 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const endIndex = startIndex + productsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchProducts();
@@ -72,7 +92,7 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters]);
+  }, [filters, sortOption]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -103,12 +123,14 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
           <div className="flex gap-2 items-center max-sm:hidden">
             <p className="text-gray-400 text-sm">Sort by:</p>
             <div>
-              <select className="outline-none w-30" name="" id="">
-                <option value="">Most Popular</option>
-                <option value="">Highest Rated</option>
-                <option value="">Newest First</option>
-                <option value="">Price: Low to High</option>
-                <option value="">Price: High to Low</option>
+              <select
+                onChange={(e) => setSortOption(e.target.value)}
+                className="outline-none w-30"
+              >
+                <option value="newest">Newest First</option>
+                <option value="rating">Highest Rated</option>
+                <option value="low-high">Price: Low to High</option>
+                <option value="high-low">Price: High to Low</option>
               </select>
             </div>
           </div>

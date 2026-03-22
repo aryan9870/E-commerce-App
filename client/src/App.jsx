@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Product from "./pages/Product";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CheckOut from "./pages/CheckOut";
 import { Toaster } from "react-hot-toast";
 import useAuthStore from "./store/useAuthStore";
 import { useEffect } from "react";
@@ -33,6 +34,7 @@ const App = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/product/:id" element={<Product />} />
+      <Route path="/checkout" element={<CheckOut />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="*" element={<Home />} />

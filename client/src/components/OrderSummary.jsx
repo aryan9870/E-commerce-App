@@ -2,10 +2,12 @@ import React from "react";
 import { IoArrowForwardOutline } from "react-icons/io5";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import useCartStore from "../store/useCartStore";
+import { useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
   const { cart } = useCartStore();
-  const subtotal = cart?.items?.reduce((acc, item) => acc + item?.product?.price * item?.quantity, 0);
+  const navigate = useNavigate();
+  const subtotal = cart?.items?.reduce((acc, item) => acc + item?.product?.discountPrice * item?.quantity, 0);
   const discount = subtotal * 0.2;
   const delivery = 15;
 
@@ -61,7 +63,7 @@ const OrderSummary = () => {
       </div>
 
       {/* Checkout Button */}
-      <button className="w-full bg-black text-white py-2 rounded-full flex items-center justify-center gap-2 cursor-pointer">
+      <button onClick={() => navigate("/checkout")} className="w-full bg-black text-white py-2 rounded-full flex items-center justify-center gap-2 cursor-pointer">
         Go to Checkout
         <IoArrowForwardOutline />
       </button>

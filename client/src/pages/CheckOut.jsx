@@ -1,0 +1,189 @@
+import React from "react";
+import { IoIosArrowForward } from "react-icons/io";
+import { useState } from "react";
+import useCartStore from "../store/useCartStore";
+
+const CheckOut = () => {
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const { cart } = useCartStore();
+  console.log(cart);
+  const subtotal = cart?.items?.reduce(
+    (acc, item) => acc + item.product.discountPrice * item.quantity,
+    0,
+  );
+  const discount = subtotal * 0.2;
+  const shipping = 15;
+  const total = subtotal - discount + shipping;
+
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
+  const handlePlaceOrder = () => {
+    console.log(paymentMethod);
+  };
+
+  return (
+    <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">
+      <div className="py-5 flex items-center">
+        <span className="text-gray-400">HOME</span>
+        <IoIosArrowForward />
+        <span className="text-gray-400">CART</span>
+        <IoIosArrowForward />
+        <span>CHECKOUT</span>
+      </div>
+      <div className="flex justify-between gap-5 max-md:flex-col">
+        <section className="w-2/5 max-md:w-full">
+          <div className="text-2xl font-semibold">
+            <p>
+              <span className="text-gray-400">DELIVERY</span> INFORMATION
+            </p>
+          </div>
+          <div className="mt-5">
+            <form action="" className="flex flex-col gap-5">
+              <div className="flex gap-5">
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="First Name"
+                />
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="Last Name"
+                />
+              </div>
+              <input
+                className="w-full border border-gray-400 rounded-sm p-2"
+                type="text"
+                placeholder="Email"
+              />
+              <input
+                className="w-full border border-gray-400 rounded-sm p-2"
+                type="text"
+                placeholder="Street"
+              />
+              <div className="flex gap-5">
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="City"
+                />
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="State"
+                />
+              </div>
+              <div className="flex gap-5">
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="Zip code"
+                />
+                <input
+                  className="w-full border border-gray-400 rounded-sm p-2"
+                  type="text"
+                  placeholder="Country"
+                />
+              </div>
+              <input
+                className="w-full border border-gray-400 rounded-sm p-2"
+                type="text"
+                placeholder="Phone"
+              />
+            </form>
+          </div>
+        </section>
+        <section className="w-2/5 max-md:w-full">
+          <div className="text-2xl font-semibold">
+            <p>
+              <span className="text-gray-400">CART</span> TOTALS
+            </p>
+          </div>
+          <ul className="flex flex-col gap-5 mt-5">
+            <li className="flex justify-between">
+              <p>Subtotal</p>
+              <p>${subtotal?.toFixed(2)}</p>
+            </li>
+            <hr className="border-gray-200" />
+            <li className="flex justify-between">
+              <p>Shipping</p>
+              <p>${shipping}</p>
+            </li>
+            <hr className="border-gray-200" />
+            <li className="flex justify-between">
+              <div>
+                <p className="font-semibold">Total (incl. discount)</p>
+                <span className="text-gray-400 text-sm">You are saving <span className="text-green-600 font-semibold">${discount.toFixed(2)}</span> on this order</span>
+              </div>
+              <p className="font-semibold">${total?.toFixed(2)}</p>
+            </li>
+          </ul>
+          <div className="mt-5">
+            <div className="text-2xl font-semibold">
+              <p>
+                <span className="text-gray-400">PAYMENT</span> METHOD
+              </p>
+            </div>
+            <div className="flex gap-5 mt-5 flex-wrap">
+              <label
+                htmlFor="stripe"
+                className="flex gap-2 cursor-pointer text-lg items-center"
+              >
+                <input
+                  checked={paymentMethod === "stripe"}
+                  onChange={handlePaymentMethodChange}
+                  value={"stripe"}
+                  className="accent-black"
+                  type="radio"
+                  name="payment"
+                  id="stripe"
+                />
+                <p>Stripe</p>
+              </label>
+              <label
+                htmlFor="razorpay"
+                className="flex gap-2 cursor-pointer text-lg"
+              >
+                <input
+                  checked={paymentMethod === "razorpay"}
+                  onChange={handlePaymentMethodChange}
+                  value={"razorpay"}
+                  className="accent-black"
+                  type="radio"
+                  name="payment"
+                  id="razorpay"
+                />
+                <p>Razorpay</p>
+              </label>
+              <label
+                htmlFor="cod"
+                className="flex gap-2 cursor-pointer text-lg"
+              >
+                <input
+                  checked={paymentMethod === "cod"}
+                  onChange={handlePaymentMethodChange}
+                  value={"cod"}
+                  className="accent-black"
+                  type="radio"
+                  name="payment"
+                  id="cod"
+                />
+                <p>Cash on Delivery</p>
+              </label>
+            </div>
+            <button
+              onClick={handlePlaceOrder}
+              className="bg-black text-white px-5 py-2 rounded-sm mt-5 block ml-auto w-fit cursor-pointer"
+            >
+              Proceed to Payment
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default CheckOut;

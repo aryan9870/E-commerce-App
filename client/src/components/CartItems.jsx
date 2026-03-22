@@ -34,7 +34,7 @@ const CartItems = () => {
 
               <p className="text-gray-500 text-sm max-md:text-xs">Color: {item?.color}</p>
 
-              <p className="font-bold max-md:text-sm mt-2">${item?.product?.price}</p>
+              <p className="font-bold max-md:text-sm mt-2">${item?.product?.discountPrice} <span className="line-through text-gray-400 italic">${item?.product?.price}</span></p>
             </div>
           </div>
 

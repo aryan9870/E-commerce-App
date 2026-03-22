@@ -21,7 +21,7 @@ const Navbar = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const logout = useAuthStore((state) => state.logout);
   const API_URL = import.meta.env.VITE_API_URL;
-  const { cart, getCart } = useCartStore();
+  const { cart, getCart, clearCart } = useCartStore();
   const handleLogout = async () => {
     try {
       const res = await axios.get(`${API_URL}/users/logout`, {
@@ -30,6 +30,7 @@ const Navbar = () => {
       if (res.data.success === true) {
         logout();
         toast.success(res.data.message);
+        clearCart();
         setOpen(false);
       }
     } catch (error) {

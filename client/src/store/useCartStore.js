@@ -24,7 +24,8 @@ const useCartStore = create((set, get) => ({
       toast.success(response.data.message);
       console.log(response.data);
 
-     set({ cart: response.data.cart });
+      // update the cart
+      get().getCart();
 
     } catch (error) {
       console.log(error.response);
@@ -42,6 +43,41 @@ const useCartStore = create((set, get) => ({
         withCredentials: true,
       });
       set({ cart: response.data.cart });
+    } catch (error) {
+      console.log(error.response);
+    }
+  },
+
+  clearCart: () => {
+    set({ cart: [] });
+  },
+
+
+  updateCartQuantity: async (productId, operation) => {
+    try {
+      const response = await axios.put(`${API_URL}/carts/${productId}`, {
+        operation,
+      }, {
+        withCredentials: true,
+      });
+      console.log(response.data);
+
+      // update the cart
+      get().getCart();
+    } catch (error) {
+      console.log(error.response);
+    }
+  },
+
+  deleteCartItem: async (productId) => {
+    try {
+      const response = await axios.delete(`${API_URL}/carts/${productId}`, {
+        withCredentials: true,
+      });
+      console.log(response.data); 
+      toast.success(response.data.message);
+      // update the cart
+      get().getCart();
     } catch (error) {
       console.log(error.response);
     }

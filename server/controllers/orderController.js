@@ -19,7 +19,7 @@ export const createOrder = async (req, res, next) => {
 
 // fetch order data for admin panel
 export const getAllOrders = async (req, res, next) => {
-  const orders = await Order.find();
+  const orders = await Order.find().populate("user", "name email").populate("products.product");
   res.status(200).json({
     success: true,
     orders,
@@ -28,7 +28,7 @@ export const getAllOrders = async (req, res, next) => {
 
 // fetch order data for user panel
 export const getUserOrders = async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id }).populate("user", "name email").populate("products.product");
   res.status(200).json({
     success: true,
     orders,

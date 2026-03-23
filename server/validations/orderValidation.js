@@ -13,11 +13,21 @@ export const orderSchema = joi.object({
     .min(1)
     .required(),
 
-  address: joi.string().required(),
+  address: joi.object({
+    firstName: joi.string().required(),
+    lastName: joi.string().required(),
+    email: joi.string().email().required(),
+    street: joi.string().required(),
+    city: joi.string().required(),
+    state: joi.string().required(),
+    zipCode: joi.string().required(),
+    country: joi.string().required(),
+    phone: joi.string().required(),
+  }),
 
   totalPrice: joi.number().required(),
 
-  paymentMethod: joi.string().valid("COD", "RAZORPAY", "STRIPE").required(),
+  paymentMethod: joi.string().valid("cod", "razorpay", "stripe").required(),
 
   paymentStatus: joi.string().valid("pending", "paid").default("pending"),
 

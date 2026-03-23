@@ -17,13 +17,20 @@ const orderScema = mongoose.Schema(
       },
     ],
     address: {
-      type: String,
-      required: true,
+      firstName: String,
+      lastName: String,
+      email: String,
+      street: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      country: String,
+      phone: String,
     },
     totalPrice: Number,
     paymentMethod: {
       type: String,
-      enum: ["COD", "RAZORPAY", "STRIPE"],
+      enum: ["cod", "razorpay", "stripe"],
     },
     paymentStatus: {
       type: String,

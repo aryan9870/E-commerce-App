@@ -2,10 +2,29 @@ import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import useCartStore from "../store/useCartStore";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const CheckOut = () => {
   const [paymentMethod, setPaymentMethod] = useState("stripe");
-  const { cart } = useCartStore();
+  const [address, setAddress] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "",
+    phone: "",
+  });
+
+  const navigate = useNavigate();
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const { cart, clearCart } = useCartStore();
   console.log(cart);
   const subtotal = cart?.items?.reduce(
     (acc, item) => acc + item.product.discountPrice * item.quantity,
@@ -19,8 +38,54 @@ const CheckOut = () => {
     setPaymentMethod(e.target.value);
   };
 
-  const handlePlaceOrder = () => {
-    console.log(paymentMethod);
+  const handlePlaceOrder = async () => {
+    if (
+      !address.firstName ||
+      !address.lastName ||
+      !address.email ||
+      !address.street ||
+      !address.city ||
+      !address.state ||
+      !address.zipCode ||
+      !address.country ||
+      !address.phone
+    ) {
+      toast.error("Please fill all the address fields");
+      return;
+    }
+
+    const products = cart.items.map((item) => {
+      return {
+        product: item.product._id,
+        quantity: item.quantity,
+        price: item.product.discountPrice,
+      };
+    });
+
+    const orderData = {
+      products,
+      totalPrice: total,
+      paymentMethod,
+      address,
+    };
+
+    try {
+      const response = await axios.post(`${API_URL}/orders`, orderData, {
+        withCredentials: true,
+      });
+      if (response.data.success) {
+        toast.success("Order placed successfully");
+        navigate("/orders");
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.data.errors) {
+        toast.error(error.response.data.errors[0].message);
+      } else {
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
   return (
@@ -43,33 +108,57 @@ const CheckOut = () => {
             <form action="" className="flex flex-col gap-5">
               <div className="flex gap-5">
                 <input
+                  value={address.firstName}
+                  onChange={(e) =>
+                    setAddress({ ...address, firstName: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="First Name"
                 />
                 <input
+                  value={address.lastName}
+                  onChange={(e) =>
+                    setAddress({ ...address, lastName: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="Last Name"
                 />
               </div>
               <input
+                value={address.email}
+                onChange={(e) =>
+                  setAddress({ ...address, email: e.target.value })
+                }
                 className="w-full border border-gray-400 rounded-sm p-2"
                 type="text"
                 placeholder="Email"
               />
               <input
+                value={address.street}
+                onChange={(e) =>
+                  setAddress({ ...address, street: e.target.value })
+                }
                 className="w-full border border-gray-400 rounded-sm p-2"
                 type="text"
                 placeholder="Street"
               />
               <div className="flex gap-5">
                 <input
+                  value={address.city}
+                  onChange={(e) =>
+                    setAddress({ ...address, city: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="City"
                 />
                 <input
+                  value={address.state}
+                  onChange={(e) =>
+                    setAddress({ ...address, state: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="State"
@@ -77,17 +166,29 @@ const CheckOut = () => {
               </div>
               <div className="flex gap-5">
                 <input
+                  value={address.zipCode}
+                  onChange={(e) =>
+                    setAddress({ ...address, zipCode: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="Zip code"
                 />
                 <input
+                  value={address.country}
+                  onChange={(e) =>
+                    setAddress({ ...address, country: e.target.value })
+                  }
                   className="w-full border border-gray-400 rounded-sm p-2"
                   type="text"
                   placeholder="Country"
                 />
               </div>
               <input
+                value={address.phone}
+                onChange={(e) =>
+                  setAddress({ ...address, phone: e.target.value })
+                }
                 className="w-full border border-gray-400 rounded-sm p-2"
                 type="text"
                 placeholder="Phone"
@@ -115,7 +216,13 @@ const CheckOut = () => {
             <li className="flex justify-between">
               <div>
                 <p className="font-semibold">Total (incl. discount)</p>
-                <span className="text-gray-400 text-sm">You are saving <span className="text-green-600 font-semibold">${discount.toFixed(2)}</span> on this order</span>
+                <span className="text-gray-400 text-sm">
+                  You are saving{" "}
+                  <span className="text-green-600 font-semibold">
+                    ${discount.toFixed(2)}
+                  </span>{" "}
+                  on this order
+                </span>
               </div>
               <p className="font-semibold">${total?.toFixed(2)}</p>
             </li>

@@ -94,7 +94,11 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
     setCurrentPage(1);
   }, [filters, sortOption]);
 
-  return (
+  return currentProducts.length === 0 ? (
+    <div className="flex justify-center items-center h-96">
+      <p className="text-gray-400 text-2xl">No products found</p>
+    </div>
+  ) : (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center gap-2 flex-wrap">
         <div className="text-2xl max-sm:hidden font-semibold">

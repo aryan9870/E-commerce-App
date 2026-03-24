@@ -1,7 +1,6 @@
 import React from "react";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { LuCircleUserRound } from "react-icons/lu";
-import { IoMdSearch } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";

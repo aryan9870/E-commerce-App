@@ -13,6 +13,7 @@ import useAuthStore from "../store/useAuthStore";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useCartStore from "../store/useCartStore";
+import SearchBar from "./SearchBar";
 
 
 const Navbar = () => {
@@ -98,14 +99,7 @@ const Navbar = () => {
             Contact Us
           </NavLink>
         </div>
-        <div className="w-[40%] flex gap-2 items-center bg-gray-200 rounded-full px-5 py-2.5 shadow-sm max-xl:hidden">
-          <IoMdSearch className="text-xl text-gray-400" />
-          <input
-            className="w-full bg-transparent outline-none"
-            type="text"
-            placeholder="Search for products..."
-          />
-        </div>
+        <SearchBar />
         <div className="flex gap-5 font-medium items-center">
           <div className="relative">
             <PiShoppingCartSimpleBold

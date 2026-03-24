@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { IoArrowForwardOutline, IoArrowBackOutline } from "react-icons/io5";
 
 const ProductGrid = ({ setOpenFilter, openFilter }) => {
-  const { products, fetchProducts, filters } = useProductStore();
+  const { products, fetchProducts, filters, searchQuery } = useProductStore();
 
   // Filter
   const filteredProducts = products.filter((product) => {
@@ -87,8 +87,8 @@ const ProductGrid = ({ setOpenFilter, openFilter }) => {
   const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts(searchQuery);
+  }, [searchQuery]);
 
   useEffect(() => {
     setCurrentPage(1);

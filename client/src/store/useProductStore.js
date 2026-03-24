@@ -16,9 +16,12 @@ export const useProductStore = create((set) => ({
   setProducts: (products) => set({ products }),
   setFilters: (filters) => set({ filters }),
 
-  fetchProducts: async () => {
+  searchQuery: "",
+  setSearchQuery: (query) => set({ searchQuery: query }),
+
+  fetchProducts: async (q = "") => {  
     try {
-      const res = await axios.get(`${API_URL}/products`);
+      const res = await axios.get(`${API_URL}/products`, {params: {q}});
       set({ products: res.data.products });
       console.log(res.data.products);
     } catch (error) {

@@ -4,6 +4,23 @@ import { uploadToCloudinary } from "../config/cloudinary.js";
 
 // Get list of all products (no filters/pagination yet)
 export const getProducts = async (req, res, next) => {
+  const { q } = req.query;
+  if (q) {
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { subCategory: { $regex: q, $options: "i" } },
+        { category: { $regex: q, $options: "i" } },
+        { brand: { $regex: q, $options: "i" } },
+        
+      ],
+    });
+    
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  }
   const products = await Product.find();
   res.status(200).json({
     success: true,
@@ -160,7 +177,10 @@ export const deleteReview = async (req, res, next) => {
   }
 
   // Only the review author or an admin can delete the review
-  if (review.user.toString() !== userId.toString() && req.user.role !== "admin") {
+  if (
+    review.user.toString() !== userId.toString() &&
+    req.user.role !== "admin"
+  ) {
     return next(new ErrorHandler("Not authorized to delete this review", 403));
   }
 

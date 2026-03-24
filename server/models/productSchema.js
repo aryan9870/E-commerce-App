@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      index: true,
     },
 
     description: {
@@ -15,15 +16,18 @@ const productSchema = new mongoose.Schema(
 
     brand: {
       type: String,
+      index: true,
     },
 
     category: {
       type: String,
       required: true, // Men, Women, Kids
+      index: true,
     },
 
     subCategory: {
       type: String, // T-Shirts, Hoodies, Jeans etc
+      index: true,
     },
 
     price: {

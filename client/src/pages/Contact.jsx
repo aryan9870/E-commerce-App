@@ -3,16 +3,16 @@ import { assets } from "../assets/assets";
 
 const Contact = () => {
   return (
-    <div className="pt-20 mx-20 text-gray-600 tracking-wider">
+    <div className="pt-20 mx-20 max-md:pt-10 max-md:mx-5 text-gray-600 tracking-wider">
       <div className="">
         <h1 className="text-center text-2xl my-10 font-semibold">
           <span className="text-gray-400">CONTACT</span> US
         </h1>
-        <div className="flex items-center justify-center gap-10">
-          <div className="w-1/2 flex items-center justify-end">
-            <img className="w-2/3" src={assets.contactImage} alt="" />
+        <div className="flex items-center justify-center gap-10 max-md:flex-col">
+          <div className="w-1/2 flex items-center justify-end max-md:w-full">
+            <img className="w-2/3 max-md:w-full" src={assets.contactImage} alt="" />
           </div>
-          <div className="w-1/2 flex flex-col gap-5">
+          <div className="w-1/2 flex flex-col gap-5 max-md:w-full">
             <div className="flex flex-col gap-2">
               <h3 className="font-semibold">Our Store</h3>
               <p>123 Main Street, City, Country</p>
@@ -30,20 +30,20 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <div className="py-20 flex justify-center items-center flex-col gap-5">
+      <div className="py-20 flex justify-center items-center flex-col max-md:items-start gap-5">
         <h4 className="font-semibold">Subscribe now & get 20% off</h4>
         <p>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.
         </p>
         <div>
-          <div className="flex gap-2 items-center bg-gray-200 rounded-full shadow-sm max-xl:hidden">
+          <div className="flex gap-2 items-center bg-gray-200 rounded-md shadow-sm">
             <input
               className="w-full bg-transparent outline-none py-2 px-5"
               type="email"
               placeholder="Enter your email"
             />
-            <button className="bg-black text-white py-2 px-5 rounded-r-full cursor-pointer">
+            <button className="bg-black text-white py-2 px-5 rounded-r-md cursor-pointer">
               Subscribe
             </button>
           </div>

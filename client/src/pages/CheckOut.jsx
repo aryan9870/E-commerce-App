@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const CheckOut = () => {
-  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
@@ -234,36 +234,6 @@ const CheckOut = () => {
               </p>
             </div>
             <div className="flex gap-5 mt-5 flex-wrap">
-              <label
-                htmlFor="stripe"
-                className="flex gap-2 cursor-pointer text-lg items-center"
-              >
-                <input
-                  checked={paymentMethod === "stripe"}
-                  onChange={handlePaymentMethodChange}
-                  value={"stripe"}
-                  className="accent-black"
-                  type="radio"
-                  name="payment"
-                  id="stripe"
-                />
-                <p>Stripe</p>
-              </label>
-              <label
-                htmlFor="razorpay"
-                className="flex gap-2 cursor-pointer text-lg"
-              >
-                <input
-                  checked={paymentMethod === "razorpay"}
-                  onChange={handlePaymentMethodChange}
-                  value={"razorpay"}
-                  className="accent-black"
-                  type="radio"
-                  name="payment"
-                  id="razorpay"
-                />
-                <p>Razorpay</p>
-              </label>
               <label
                 htmlFor="cod"
                 className="flex gap-2 cursor-pointer text-lg"

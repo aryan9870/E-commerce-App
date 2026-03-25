@@ -80,7 +80,7 @@ const MyOrder = () => {
                         )/100 * 80 + 15}
                       </p>
                       <p>
-                        Quantity:{" "}
+                        Quantity:
                         {order.products.reduce(
                           (total, item) => total + item.quantity,
                           0,
@@ -98,7 +98,7 @@ const MyOrder = () => {
                   </div>
                 </div>
                 <div className="flex-1 flex items-center justify-center text-sm max-md:hidden">
-                  <p>{order.orderStatus}</p>
+                  <p>Order Status: <span className="text-gray-400">{order.orderStatus.toLowerCase() === "pending" ? "Ready to ship" : order.orderStatus.toLowerCase() === "shipped" ? "Out for delivery" : order.orderStatus.toLowerCase() === "delivered" ? "Delivered" : "Cancelled"}</span></p>
                 </div>
                 <div className="flex-1 flex items-center justify-end text-sm max-md:w-full max-md:justify-start">
                   <button

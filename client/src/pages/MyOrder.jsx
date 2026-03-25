@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const MyOrder = () => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
@@ -28,9 +28,9 @@ const MyOrder = () => {
   }, []);
 
   console.log(orders);
-  if (orders.length === 0) {
+  if (!orders) {
     return (
-      <div className="mt-20 text-9xl flex items-center justify-center">
+      <div className="mt-20 text-2xl flex items-center justify-center">
         Loading...
       </div>
     );
@@ -47,71 +47,98 @@ const MyOrder = () => {
         <span className="text-gray-400">MY</span> ORDERS
       </h1>
       <div>
-        <ul>
-          {orders.map((order, index) => {
-            return (
-              <li
-                key={index}
-                className="flex p-2 justify-between border-y border-gray-200 py-5 items-center gap-10 max-md:flex-col"
-              >
-                <div className="flex gap-5 flex-1">
-                  <div className="h-24 w-24">
-                    <img
-                      className="h-full w-full"
-                      src={order.products[0].product.images[0]}
-                      alt=""
-                    />
-                  </div>
-                  <div className="flex flex-col justify-around flex-1">
-                    <h3>
-                      {order.products
-                        .map((item) => item.product.name)
-                        .join(", ")
-                        .slice(0, 30)}
-                      ...
-                    </h3>
-                    <div className="flex justify-between items-center text-sm">
-                      <p>
-                        $
-                        {order.products.reduce(
-                          (total, item) =>
-                            total + item.product?.discountPrice * item.quantity,
-                          0,
-                        )/100 * 80 + 15}
-                      </p>
-                      <p>
-                        Quantity:
-                        {order.products.reduce(
-                          (total, item) => total + item.quantity,
-                          0,
-                        )}
-                      </p>
-                      <p>Items: {order.products.length}</p>
+        {orders.length > 0 ? (
+          <ul>
+            {orders.map((order, index) => {
+              return (
+                <li
+                  key={index}
+                  className="flex p-2 justify-between border-y border-gray-200 py-5 items-center gap-10 max-md:flex-col"
+                >
+                  <div className="flex gap-5 flex-1">
+                    <div className="h-24 w-24">
+                      <img
+                        className="h-full w-full"
+                        src={order.products[0].product.images[0]}
+                        alt=""
+                      />
                     </div>
-                    <div>
-                      <b>Date:</b>
-                      <span className="text-gray-400 text-sm">
-                        {" "}
-                        {order.createdAt.slice(0, 10)}{" "}
+                    <div className="flex flex-col justify-around flex-1">
+                      <h3>
+                        {order.products
+                          .map((item) => item.product.name)
+                          .join(", ")
+                          .slice(0, 30)}
+                        ...
+                      </h3>
+                      <div className="flex justify-between items-center text-sm">
+                        <p>
+                          $
+                          {(order.products.reduce(
+                            (total, item) =>
+                              total +
+                              item.product?.discountPrice * item.quantity,
+                            0,
+                          ) /
+                            100) *
+                            80 +
+                            15}
+                        </p>
+                        <p>
+                          Quantity:
+                          {order.products.reduce(
+                            (total, item) => total + item.quantity,
+                            0,
+                          )}
+                        </p>
+                        <p>Items: {order.products.length}</p>
+                      </div>
+                      <div>
+                        <b>Date:</b>
+                        <span className="text-gray-400 text-sm">
+                          {" "}
+                          {order.createdAt.slice(0, 10)}{" "}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1 flex items-center justify-center text-sm max-md:hidden">
+                    <p>
+                      Order Status:{" "}
+                      <span className="text-gray-400">
+                        {order.orderStatus.toLowerCase() === "pending"
+                          ? "Ready to ship"
+                          : order.orderStatus.toLowerCase() === "shipped"
+                            ? "Out for delivery"
+                            : order.orderStatus.toLowerCase() === "delivered"
+                              ? "Delivered"
+                              : "Cancelled"}
                       </span>
-                    </div>
+                    </p>
                   </div>
-                </div>
-                <div className="flex-1 flex items-center justify-center text-sm max-md:hidden">
-                  <p>Order Status: <span className="text-gray-400">{order.orderStatus.toLowerCase() === "pending" ? "Ready to ship" : order.orderStatus.toLowerCase() === "shipped" ? "Out for delivery" : order.orderStatus.toLowerCase() === "delivered" ? "Delivered" : "Cancelled"}</span></p>
-                </div>
-                <div className="flex-1 flex items-center justify-end text-sm max-md:w-full max-md:justify-start">
-                  <button
-                    onClick={() => navigate(`/order/${order._id}`)}
-                    className="border border-gray-200 rounded-sm py-2 px-5 cursor-pointer"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                  <div className="flex-1 flex items-center justify-end text-sm max-md:w-full max-md:justify-start">
+                    <button
+                      onClick={() => navigate(`/order/${order._id}`)}
+                      className="border border-gray-200 rounded-sm py-2 px-5 cursor-pointer"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <div className="text-2xl mb-2 flex items-center justify-center h-[50vh] flex-col gap-5">
+            <p className="text-gray-400">You haven’t placed any orders yet</p>
+            <button
+              onClick={() => navigate("/collection")}
+              className="rounded-sm py-2 px-5 bg-black text-white cursor-pointer text-sm"
+            >
+              Shop Now
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

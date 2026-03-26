@@ -5,12 +5,13 @@ import useAuthStore from "../store/useAuthStore";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import useCartStore from "../store/useCartStore";
+import useUIStore from "../store/useUIStore";
+import LoadingButton from "../components/LoadingButton";
 
 const Signup = () => {
 
   const signup = useAuthStore((state) => state.signup);
-  const { getCart } = useCartStore();
+  const { loading, setLoading } = useUIStore();
   const API_URL = import.meta.env.VITE_API_URL;
   const [user, setUser] = useState({
     name: "",
@@ -22,6 +23,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log(user.name, user.email, user.password);
     try {
       const res = await axios.post(
@@ -29,11 +31,12 @@ const Signup = () => {
         user,
         { withCredentials: true },
       );
-      console.log(res.data);
-      signup(res.data.user);
-      toast.success(res.data.message);
-      await getCart();
-      navigate("/");
+      if(res.data.success){
+        console.log(res.data);
+        signup(res.data.user);
+        toast.success(res.data.message);
+        navigate("/");
+      }
     } catch (error) {
       console.log(error.response);
       if(error.response.data.errors){
@@ -42,6 +45,8 @@ const Signup = () => {
       else{
         toast.error(error.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,7 +92,7 @@ const Signup = () => {
           </div>
 
           <button onClick={handleSubmit} className="bg-black text-white py-2 mt-2 hover:bg-gray-800 transition">
-            Create
+            {loading ? <LoadingButton /> : "Create"}
           </button>
         </form>
       </div>

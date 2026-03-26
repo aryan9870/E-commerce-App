@@ -4,13 +4,16 @@ import { assets } from "../assets/assets";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const MyOrder = () => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const [orders, setOrders] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchOrders = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/orders/my-orders`, {
         withCredentials: true,
@@ -20,6 +23,8 @@ const MyOrder = () => {
       }
     } catch (error) {
       console.log(error.response);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,16 +32,9 @@ const MyOrder = () => {
     fetchOrders();
   }, []);
 
-  console.log(orders);
-  if (!orders) {
-    return (
-      <div className="mt-20 text-2xl flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
-  return (
+  return loading ? (
+    <LoadingSpinner />
+  ) : (
     <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">
       <div className="py-5 flex items-center">
         <span className="text-gray-400">HOME</span>
@@ -47,7 +45,7 @@ const MyOrder = () => {
         <span className="text-gray-400">MY</span> ORDERS
       </h1>
       <div>
-        {orders.length > 0 ? (
+        {orders?.length > 0 ? (
           <ul>
             {orders.map((order, index) => {
               return (

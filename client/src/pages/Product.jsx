@@ -10,6 +10,7 @@ import { FiCheck } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useCartStore from "../store/useCartStore";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Product = () => {
   const { id } = useParams();
@@ -62,11 +63,10 @@ const Product = () => {
   const [size, setSize] = useState("");
   const [color, setColor] = useState("");
 
-  // loading state
-  if (!product) return <div className="mt-40">Loading...</div>;
+  
 
   // render product
-  return (
+  return !product ? <LoadingSpinner /> : (
     <div className="mt-20 md:mx-20 mx-5 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">
       <div className="py-5 flex items-center">
         <span className="text-gray-400">HOME</span> <IoIosArrowForward />

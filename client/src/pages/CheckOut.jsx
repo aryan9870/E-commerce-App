@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import useCartStore from "../store/useCartStore";
@@ -87,6 +87,10 @@ const CheckOut = () => {
       }
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">

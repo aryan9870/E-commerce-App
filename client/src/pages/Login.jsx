@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +51,10 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

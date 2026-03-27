@@ -9,6 +9,7 @@ const Collection = () => {
 
   // Stop scrolling when modal is open
   useEffect(() => {
+    window.scrollTo(0,0);
     if (openFilter) {
       document.body.style.overflow = "hidden";
     } else {

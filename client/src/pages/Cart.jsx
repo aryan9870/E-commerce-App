@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CartItems from "../components/CartItems";
 import OrderSummary from "../components/OrderSummary";
 import { IoIosArrowForward } from "react-icons/io";
@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 const Cart = () => {
   const { cart } = useCartStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="mt-20 mx-20 max-sm:mt-18 max-sm:mx-5 text-gray-600 tracking-wider">

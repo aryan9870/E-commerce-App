@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { assets } from "../assets/assets";
 
 const About = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="pt-20 mx-20 max-md:pt-10 max-md:mx-5 text-gray-600 tracking-wider">
       <div className="">

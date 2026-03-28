@@ -16,20 +16,20 @@ const Dashboard = () => {
     
 
   return (
-    <div className="mt-20 flex text-gray-600">
+    <div className="mt-20 flex text-gray-600 text-sm">
       <div className="border-r border-gray-200 flex-1">
         <ul className="flex flex-col gap-3 py-5 pl-5 h-[calc(100vh-100px)]">
           <NavLink  to="/dashboard/addProduct" className={({isActive}) => isActive ? "p-2 cursor-pointer flex gap-2 items-center border border-gray-200 bg-gray-200" : "p-2 cursor-pointer flex gap-2 items-center border border-gray-200"}>
             <IoAddCircleOutline size={22} />
-            <span>Add Items</span>
+            <span className="max-md:hidden">Add Items</span>
           </NavLink>
           <NavLink to="/dashboard/listProduct" className={({isActive}) => isActive ? "p-2 cursor-pointer flex gap-2 items-center border border-gray-200 bg-gray-200" : "p-2 cursor-pointer flex gap-2 items-center border border-gray-200"}>
             <IoIosList size={22} />
-            <span>List Items</span>
+            <span className="max-md:hidden">List Items</span>
           </NavLink>
           <NavLink to="/dashboard/orders" className={({isActive}) => isActive ? "p-2 cursor-pointer flex gap-2 items-center border border-gray-200 bg-gray-200" : "p-2 cursor-pointer flex gap-2 items-center border border-gray-200"}>
             <IoIosList size={22} />
-            <span>Orders</span>
+            <span className="max-md:hidden">Orders</span>
           </NavLink>
         </ul>
       </div>

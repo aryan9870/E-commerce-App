@@ -18,8 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const logout = useAuthStore((state) => state.logout);
+  const {user, isLoggedIn, logout} = useAuthStore();
   const API_URL = import.meta.env.VITE_API_URL;
   const { cart, getCart, clearCart } = useCartStore();
   const handleLogout = async () => {
@@ -99,7 +98,7 @@ const Navbar = () => {
         </div>
         <SearchBar />
         <div className="flex gap-5 font-medium items-center">
-          <div className="relative">
+          {user?.role === "admin" ? <div onClick={() => navigate("/dashboard")} className="cursor-pointer">Dashboard</div> : <div className="relative">
             <PiShoppingCartSimpleBold
               onClick={() => navigate("/cart")}
               className="text-2xl cursor-pointer"
@@ -109,7 +108,7 @@ const Navbar = () => {
                 {cart?.items?.length}
               </span>
             )}
-          </div>
+          </div>}
           {isLoggedIn ? (
             <span>
               <LuCircleUserRound

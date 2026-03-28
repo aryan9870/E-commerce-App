@@ -32,12 +32,16 @@ const Login = () => {
         },
         { withCredentials: true },
       );
-      if(res.data.success){
+      if(res.data.success && res.data.user.role === "user"){
         console.log(res.data);
         await getCart();
         login(res.data.user);
         toast.success(res.data.message);
         navigate("/");
+      } else {
+        login(res.data.user);
+        toast.success(res.data.message);
+        navigate("/dashboard");
       }
     } catch (error) {
       console.log(error.response);

@@ -16,9 +16,13 @@ import MyOrder from "./pages/MyOrder";
 import { Toaster } from "react-hot-toast";
 import useAuthStore from "./store/useAuthStore";
 import { useEffect } from "react";
+import Dashboard from "./pages/Dashboard";
+import AddProduct from "./pages/AddProduct";
+import Orders from "./pages/Orders";
+import ListItems from "./pages/ListItems";
 
 const App = () => {
-  const checkAuth = useAuthStore((state) => state.checkAuth);
+  const { user, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -39,6 +43,14 @@ const App = () => {
       <Route path="/orders" element={<MyOrder />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+
+      {user?.role === "admin" && <Route path="/dashboard" element={<Dashboard />}>
+        <Route index element={<AddProduct />} />
+        <Route path="addProduct" element={<AddProduct />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="listProduct" element={<ListItems />} />
+      </Route>}
+      
       <Route path="*" element={<Home />} />
     </Routes>
     <Footer />

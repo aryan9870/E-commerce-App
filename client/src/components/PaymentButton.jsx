@@ -28,8 +28,23 @@ const PaymentButton = () => {
         name: "ZEN VY CLOTHING",
         description: "Test Transaction",
         order_id: order_id,
-        handler: (response) => {
-          alert("Payment successful");
+        handler: async (response) => {
+          try {
+            const res = await axios.post(`${API_URL}/orders/verify`, 
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }, 
+              {
+              withCredentials: true,
+            });
+            console.log(res.data);
+            alert(res.data.message);
+          } catch (error) {
+            console.error("Payment verification failed:", error);
+            alert("Payment verification failed");
+          }
         },
         prefill: {
           name: "John Doe",

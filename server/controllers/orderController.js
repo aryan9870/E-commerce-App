@@ -1,6 +1,7 @@
 import Order from "../models/orderSchema.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import razorpayInstance from "../config/razorpay.js";
+import crypto from "crypto";
 
 // create order
 export const createOrder = async (req, res, next) => {
@@ -20,9 +21,38 @@ export const createOrder = async (req, res, next) => {
   }
 };
 
+// verify order
+export const verifyOrder = async (req, res, next) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(body.toString())
+      .digest("hex");
+
+    if (expectedSignature === razorpay_signature) {
+      res.json({ message: "Payment Verified", success: true });
+    } else {
+      res.json({ message: "Payment Failed", success: false });
+    }
+
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error verifying payment", success: false });
+  }
+};
+
 // fetch order data for admin panel
 export const getAllOrders = async (req, res, next) => {
-  const orders = await Order.find().populate("user", "name email").populate("products.product");
+  const orders = await Order.find()
+    .populate("user", "name email")
+    .populate("products.product");
   res.status(200).json({
     success: true,
     orders,
@@ -31,7 +61,9 @@ export const getAllOrders = async (req, res, next) => {
 
 // fetch order data for user panel
 export const getUserOrders = async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id }).populate("user", "name email").populate("products.product");
+  const orders = await Order.find({ user: req.user._id })
+    .populate("user", "name email")
+    .populate("products.product");
   res.status(200).json({
     success: true,
     orders,

@@ -27,7 +27,7 @@ export const orderSchema = joi.object({
 
   totalPrice: joi.number().required(),
 
-  paymentMethod: joi.string().valid("cod", "razorpay", "stripe").required(),
+  paymentMethod: joi.string().valid("cod", "razorpay").required(),
 
   paymentStatus: joi.string().valid("pending", "paid").default("pending"),
 

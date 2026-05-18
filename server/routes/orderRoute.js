@@ -6,7 +6,7 @@ import { orderSchema, updateOrderStatusSchema } from "../validations/orderValida
 
 const router = express.Router();
 
-router.post("/", isLoggedIn, validate(orderSchema), createOrder);
+router.post("/", isLoggedIn, createOrder);
 router.get("/", isLoggedIn, isAdmin, getAllOrders);
 router.get("/my-orders", isLoggedIn, getUserOrders);
 router.get("/:id", isLoggedIn, getSingleOrder);

@@ -5,6 +5,7 @@ import useCartStore from "../store/useCartStore";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import PaymentButton from "../components/PaymentButton";
 
 const CheckOut = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
@@ -36,56 +37,6 @@ const CheckOut = () => {
 
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
-  };
-
-  const handlePlaceOrder = async () => {
-    if (
-      !address.firstName ||
-      !address.lastName ||
-      !address.email ||
-      !address.street ||
-      !address.city ||
-      !address.state ||
-      !address.zipCode ||
-      !address.country ||
-      !address.phone
-    ) {
-      toast.error("Please fill all the address fields");
-      return;
-    }
-
-    const products = cart.items.map((item) => {
-      return {
-        product: item.product._id,
-        quantity: item.quantity,
-        price: item.product.discountPrice,
-      };
-    });
-
-    const orderData = {
-      products,
-      totalPrice: total,
-      paymentMethod,
-      address,
-    };
-
-    try {
-      const response = await axios.post(`${API_URL}/orders`, orderData, {
-        withCredentials: true,
-      });
-      if (response.data.success) {
-        toast.success("Order placed successfully");
-        navigate("/orders");
-        console.log(response.data);
-      }
-    } catch (error) {
-      console.log(error.response);
-      if (error.response.data.errors) {
-        toast.error(error.response.data.errors[0].message);
-      } else {
-        toast.error(error.response.data.message);
-      }
-    }
   };
 
   useEffect(() => {
@@ -254,12 +205,7 @@ const CheckOut = () => {
                 <p>Cash on Delivery</p>
               </label>
             </div>
-            <button
-              onClick={handlePlaceOrder}
-              className="bg-black text-white px-5 py-2 rounded-sm mt-5 block ml-auto w-fit cursor-pointer"
-            >
-              Proceed to Payment
-            </button>
+            <PaymentButton />
           </div>
         </section>
       </div>

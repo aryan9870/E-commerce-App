@@ -1,20 +1,23 @@
 import Order from "../models/orderSchema.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import razorpayInstance from "../config/razorpay.js";
 
 // create order
 export const createOrder = async (req, res, next) => {
-  const { products, totalPrice, paymentMethod, address } = req.body;
-  const order = await Order.create({
-    user: req.user._id,
-    products,
-    totalPrice,
-    paymentMethod,
-    address,
-  });
-  res.status(201).json({
-    success: true,
-    order,
-  });
+  const { amount, currency } = req.body;
+
+  try {
+    const options = {
+      amount: amount * 100, // Convert amount to smallest currency unit
+      currency: currency || "INR",
+    };
+
+    const order = await razorpayInstance.orders.create(options);
+    res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error creating RazorPay order");
+  }
 };
 
 // fetch order data for admin panel

@@ -160,12 +160,12 @@ const CheckOut = () => {
           <ul className="flex flex-col gap-5 mt-5">
             <li className="flex justify-between">
               <p>Subtotal</p>
-              <p>${subtotal?.toFixed(2)}</p>
+              <p>₹ {subtotal?.toFixed(2)}</p>
             </li>
             <hr className="border-gray-200" />
             <li className="flex justify-between">
               <p>Shipping</p>
-              <p>${shipping}</p>
+              <p>₹ {shipping}</p>
             </li>
             <hr className="border-gray-200" />
             <li className="flex justify-between">
@@ -174,12 +174,12 @@ const CheckOut = () => {
                 <span className="text-gray-400 text-sm">
                   You are saving{" "}
                   <span className="text-green-600 font-semibold">
-                    ${discount.toFixed(2)}
+                    ₹ {discount.toFixed(2)}
                   </span>{" "}
                   on this order
                 </span>
               </div>
-              <p className="font-semibold">${total?.toFixed(2)}</p>
+              <p className="font-semibold">₹ {total?.toFixed(2)}</p>
             </li>
           </ul>
           <div className="mt-5">

@@ -105,9 +105,9 @@ const Product = () => {
               {product.ratings}/5
             </div>
             <div className="font-semibold gap-2 flex items-center text-2xl">
-              <span className="">${product.discountPrice}</span>
+              <span className="">₹ {product.discountPrice}</span>
               <span className="text-gray-400 line-through">
-                ${product.price}
+                ₹ {product.price}
               </span>
               <span className="text-red-600 bg-red-50 font-extralight px-2 flex items-center justify-center text-xs rounded-full">
                 {product.discountPrice

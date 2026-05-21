@@ -72,8 +72,7 @@ const MyOrder = () => {
                       </h3>
                       <div className="flex justify-between items-center text-sm">
                         <p>
-                          $
-                          {(order.products.reduce(
+                          ₹ {((order.products.reduce(
                             (total, item) =>
                               total +
                               item.product?.discountPrice * item.quantity,
@@ -81,11 +80,10 @@ const MyOrder = () => {
                           ) /
                             100) *
                             80 +
-                            15}
+                            15).toFixed(2)}
                         </p>
                         <p>
-                          Quantity:
-                          {order.products.reduce(
+                          Quantity: {order.products.reduce(
                             (total, item) => total + item.quantity,
                             0,
                           )}

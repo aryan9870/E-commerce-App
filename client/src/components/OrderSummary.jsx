@@ -23,12 +23,12 @@ const OrderSummary = () => {
       <div className="flex flex-col gap-3">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span className="font-semibold">${subtotal.toFixed(2)}</span>
+          <span className="font-semibold">₹ {subtotal.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between">
           <span>Discount (-20%)</span>
-          <span className="text-red-500 font-semibold">-${discount.toFixed(2)}</span>
+          <span className="text-red-500 font-semibold">-₹ {discount.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -43,7 +43,7 @@ const OrderSummary = () => {
       {/* Total */}
       <div className="flex justify-between items-center mb-5">
         <span className="text-lg font-medium">Total</span>
-        <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+        <span className="text-2xl font-bold">₹ {total.toFixed(2)}</span>
       </div>
 
       {/* Promo Code */}

@@ -143,8 +143,8 @@ const Filter = ({ setOpenFilter, openFilter }) => {
           className="w-full cursor-pointer"
         />
         <div className="flex justify-between text-sm mt-2 px-5">
-          <span>${filters.price[0]}</span>
-          <span>${filters.price[1]}</span>
+          <span>₹ {filters.price[0]}</span>
+          <span>₹ {filters.price[1]}</span>
         </div>
       </div>
       <div className="flex justify-between items-center mx-3 py-3 font-semibold border-b border-gray-300">

@@ -13,8 +13,8 @@ function ProductCard({ product }) {
             <RatingDisplay rating={product.ratings} />
         </div>
         <div className="font-semibold gap-2 flex items-center">
-          <span className="">${product.discountPrice}</span>
-          <span className="text-gray-400 line-through italic">${product.price}</span>
+          <span className="">₹ {product.discountPrice}</span>
+          <span className="text-gray-400 line-through italic">₹ {product.price}</span>
           <span className="text-red-600 bg-red-50 font-extralight px-2 flex items-center justify-center text-xs rounded-full">
             {product.discountPrice ? `-${Math.round(((product.price - product.discountPrice) / product.price) * 100)}%` : ""}
           </span>

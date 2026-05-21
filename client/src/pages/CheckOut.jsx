@@ -204,8 +204,24 @@ const CheckOut = () => {
                 />
                 <p>Cash on Delivery</p>
               </label>
+              <label
+                htmlFor="razorpay"
+                className="flex gap-2 cursor-pointer text-lg"
+              >
+                <input
+                  checked={paymentMethod === "razorpay"}
+                  onChange={handlePaymentMethodChange}
+                  value={"razorpay"}
+                  className="accent-black"
+                  type="radio"
+                  name="payment"
+                  id="razorpay"
+                />
+                <p>Razorpay</p>
+              </label>
+
             </div>
-            <PaymentButton />
+            <PaymentButton address={address} paymentMethod={paymentMethod} cart={cart} total={total} />
           </div>
         </section>
       </div>

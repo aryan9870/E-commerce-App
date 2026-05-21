@@ -24,7 +24,7 @@ export const createOrder = async (req, res, next) => {
 // verify order
 export const verifyOrder = async (req, res, next) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, address, paymentMethod, cart, total } =
       req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -35,7 +35,24 @@ export const verifyOrder = async (req, res, next) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
-      res.json({ message: "Payment Verified", success: true });
+      // Save order details to database
+      const order = new Order({
+        user: req.user._id,
+        products: cart.items.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+        totalPrice: total, // Store in smallest currency unit
+        paymentMethod,
+        address: address,
+        orderStatus: "pending",
+        paymentStatus: "paid",
+        razorpayOrderId: razorpay_order_id, 
+        razorpayPaymentId: razorpay_payment_id,
+      });
+      await order.save();
+
+       res.json({ message: "Order created successfully", success: true });
     } else {
       res.json({ message: "Payment Failed", success: false });
     }

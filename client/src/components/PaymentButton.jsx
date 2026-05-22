@@ -9,6 +9,11 @@ const PaymentButton = ({ address, paymentMethod, cart, total }) => {
 
   const handlePayment = async () => {
 
+    if(paymentMethod === "cod") {
+      toast.error("Cash on Delivery is currently unavailable. Please choose RazorPay.");
+      return;
+    }
+
     if (!address.firstName || !address.lastName || !address.email || !address.street || !address.city || !address.state || !address.zipCode || !address.country || !address.phone) {
       toast.error("Please fill in all address fields");
       return;

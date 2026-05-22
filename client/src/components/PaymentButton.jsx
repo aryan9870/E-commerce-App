@@ -2,10 +2,12 @@ import React from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../store/useCartStore";
 
 const PaymentButton = ({ address, paymentMethod, cart, total }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const { clearCart } = useCartStore();
 
   const handlePayment = async () => {
 
@@ -63,6 +65,7 @@ const PaymentButton = ({ address, paymentMethod, cart, total }) => {
               if (res.data.success) {
                 toast.success("Order placed successfully");
                 navigate("/orders");
+                clearCart();
               } else {
                 toast.error("Payment verification failed");
               }

@@ -48,8 +48,21 @@ const useCartStore = create((set, get) => ({
     }
   },
 
-  clearCart: () => {
-    set({ cart: [] });
+  clearCart: async () => {
+    try {
+      const response = await axios.delete(`${API_URL}/carts`, {
+        withCredentials: true,
+      });
+
+      if (response.data.success) {
+        // update the cart
+        get().getCart();
+      } else {
+        toast.error("Failed to clear cart");
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
   },
 
 

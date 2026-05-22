@@ -158,6 +158,25 @@ export const removeFromCart = async (req, res, next) => {
   });
 };
 
+// Clear cart
+export const clearCart = async (req, res, next) => {
+  const userId = req.user._id;
+
+  const cart = await Cart.findOne({ user: userId });
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
+
+  cart.items = [];
+  await cart.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Cart cleared",
+    cart,
+  });
+};
+
 
 
 

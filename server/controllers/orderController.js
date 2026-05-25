@@ -9,7 +9,7 @@ export const createOrder = async (req, res, next) => {
 
   try {
     const options = {
-      amount: amount * 100, // Convert amount to smallest currency unit
+      amount: Math.round(amount * 100), // Convert amount to smallest currency unit
       currency: currency || "INR",
     };
 

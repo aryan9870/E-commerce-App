@@ -95,6 +95,10 @@ const useCartStore = create((set, get) => ({
       console.log(error.response);
     }
   },
+
+  clearCartOnLogout: () => {
+    set({ cart: [] });
+  },
 }));
 
 export default useCartStore;

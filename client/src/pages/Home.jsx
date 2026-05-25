@@ -30,8 +30,8 @@ const Home = () => {
     fetchProducts();
   }, [])
 
-  let newArrivals = items.slice(0, 4);
-  let topSelling = items.filter(item => item.ratings >= 4).slice(0, 4);
+  let newArrivals = items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4);
+  let topSelling = items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).reverse().slice(0, 4);
 
   return loading ? <LoadingSpinner /> : (
     <div className='text-gray-600 tracking-wider'>

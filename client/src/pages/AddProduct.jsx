@@ -4,10 +4,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useProductStore } from "../store/useProductStore";
 import { useNavigate } from "react-router-dom";
+import useUIStore from "../store/useUIStore";
 
 const AddProduct = () => {
 
   const addProduct = useProductStore((state) => state.addProduct);
+  const { loading, setLoading } = useUIStore();
   const navigate = useNavigate();
 
   const [images, setImages] = useState([null, null, null]);
@@ -18,7 +20,7 @@ const AddProduct = () => {
     category: "Men",
     subCategory: "T-Shirts",
     price: 0,
-    discountedPrice: 0,
+    discountPrice: 0,
     stock: 0,
     isFeatured: false,
   });
@@ -78,7 +80,7 @@ const AddProduct = () => {
     formData.append("category", data.category);
     formData.append("subCategory", data.subCategory);
     formData.append("price", data.price);
-    formData.append("discountedPrice", data.discountedPrice);
+    formData.append("discountPrice", data.discountPrice);
     formData.append("stock", data.stock);
     formData.append("isFeatured", data.isFeatured);
     sizes.forEach((size) => {
@@ -88,11 +90,16 @@ const AddProduct = () => {
     images.forEach((image) => {
       formData.append("images", image);
     });
-
+    setLoading(true);
     const res = await addProduct(formData);
     if(res.success){
+      toast.success(res.message);
       navigate("/products");
+    } else {
+      toast.error(res.message);
     }
+    
+    setLoading(false);
     
   };
   
@@ -211,12 +218,12 @@ const AddProduct = () => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <p>Discounted Price</p>
+            <p>Discount Price</p>
             <input
               type="number"
-              name="discountedPrice"
-              id="discountedPrice"
-              value={data.discountedPrice}
+              name="discountPrice"
+              id="discountPrice"
+              value={data.discountPrice}
               onChange={onDataChangeHandler}
               className="border border-gray-200 py-1 px-2 rounded-xs w-32"
             />
@@ -268,7 +275,7 @@ const AddProduct = () => {
           <label htmlFor="isFeatured">Featured</label>
         </div>
         <button type="submit" className="bg-black text-white py-2 px-5 rounded-xs cursor-pointer">
-          Add Product
+          {loading ? "Adding Product..." : "Add Product"}
         </button>
       </form>
     </>

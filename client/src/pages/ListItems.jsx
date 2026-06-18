@@ -1,8 +1,17 @@
 import React from "react";
-import { assets, products } from "../assets/assets";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { useProductStore } from "../store/useProductStore";
+import { useEffect } from "react";
 
 const ListItems = () => {
+
+  const { products, fetchProducts, deleteProduct } = useProductStore();
+
+
+  useEffect(() => {
+   fetchProducts();
+  }, []);
+
   return (
     <>
       <div className="">
@@ -32,12 +41,15 @@ const ListItems = () => {
                 <p className="max-md:hidden">{product.category}</p>
                 <p className="max-md:hidden">{product.price}</p>
                 <p className="max-md:hidden">{product.stock}</p>
-                <button className="cursor-pointer text-red-500 hover:text-red-600">
+                <button 
+                  className="cursor-pointer text-red-500 hover:text-red-600" 
+                  onClick={() => deleteProduct(product._id)}
+                >
                   <MdOutlineDeleteForever size={25} />
                 </button>
               </div>
             );
-          }).slice(0, 10)}
+          }).reverse()}
         </div>
       </div>
     </>

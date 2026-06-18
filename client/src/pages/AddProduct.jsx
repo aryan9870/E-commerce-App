@@ -94,7 +94,7 @@ const AddProduct = () => {
     const res = await addProduct(formData);
     if(res.success){
       toast.success(res.message);
-      navigate("/products");
+      navigate("/dashboard/listProduct");
     } else {
       toast.error(res.message);
     }

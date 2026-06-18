@@ -2,8 +2,14 @@ import React from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useProductStore } from "../store/useProductStore";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
+
+  const addProduct = useProductStore((state) => state.addProduct);
+  const navigate = useNavigate();
+
   const [images, setImages] = useState([null, null, null]);
   const [data, setData] = useState({
     name: "",
@@ -45,7 +51,7 @@ const AddProduct = () => {
     }
   }
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     // validation for images
@@ -65,9 +71,29 @@ const AddProduct = () => {
 
     // here we have to upload the files on the server
 
-    console.log(data);
-    console.log(images);
-    console.log(sizes);
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("brand", data.brand);
+    formData.append("category", data.category);
+    formData.append("subCategory", data.subCategory);
+    formData.append("price", data.price);
+    formData.append("discountedPrice", data.discountedPrice);
+    formData.append("stock", data.stock);
+    formData.append("isFeatured", data.isFeatured);
+    sizes.forEach((size) => {
+      formData.append("sizes", size);
+    });
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    const res = await addProduct(formData);
+    if(res.success){
+      navigate("/products");
+    }
+    
   };
   
 

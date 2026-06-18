@@ -28,4 +28,17 @@ export const useProductStore = create((set) => ({
       console.log(error.response.data.message);
     }
   },
+
+  addProduct: async (data) => {
+    try {
+      const res = await axios.post(`${API_URL}/products`, data, {
+        withCredentials: true,
+      });
+      return res.data;
+    } catch (error) {
+      console.log(error.response.data);
+      return error.response.data;
+    }
+  }
+    
 }));

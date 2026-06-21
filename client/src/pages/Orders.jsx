@@ -2,11 +2,12 @@ import React from "react";
 import { BsBoxSeam } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const Orders = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const [orders, setOrders] = useState([]);
-  console.log(orders);
+  const [status, setStatus] = useState("Order Placed");
 
   // fetch orders
   const fetchOrders = async () => {
@@ -16,15 +17,35 @@ const Orders = () => {
       });
       setOrders(response.data.orders);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   };
+
+  // update order status
+  const updateOrderStatus = async (id, status) => {
+    try {
+      const response = await axios.put(`${API_URL}/orders/${id}`, {
+        status,
+      }, { withCredentials: true });
+      if (response.data.success) {
+        toast.success(`Order status updated successfully`);
+      }
+    } catch (error) {
+      console.log(error.response);
+    } finally {
+      fetchOrders();
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
   }, []);
 
+
+
+
   return (
-    <div className="p-6">
+    <div className="">
       <h2 className="mb-3">Orders</h2>
 
       <div className="flex flex-col gap-5">
@@ -56,13 +77,13 @@ const Orders = () => {
                 <p>date: {order.createdAt.slice(0, 10)}</p>
               </div>
 
-              <div className="flex flex-col border">
-                <h3 className="text-lg">{order.amount}</h3>
+              <div className="flex flex-col">
+                <h3>&#8377; {order.totalPrice}</h3>
 
-                <select className="border p-2 rounded">
-                  <option>Order Placed</option>
-                  <option>Shipped</option>
-                  <option>Delivered</option>
+                <select value={order.orderStatus} onChange={(e) => updateOrderStatus(order._id, e.target.value)} className="border p-2 rounded">
+                  <option value="pending">Order Placed</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
                 </select>
               </div>
 

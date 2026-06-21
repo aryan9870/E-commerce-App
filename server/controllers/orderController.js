@@ -69,7 +69,8 @@ export const verifyOrder = async (req, res, next) => {
 export const getAllOrders = async (req, res, next) => {
   const orders = await Order.find()
     .populate("user", "name email")
-    .populate("products.product");
+    .populate("products.product")
+    .sort({ createdAt: -1 });
   res.status(200).json({
     success: true,
     orders,
@@ -80,7 +81,8 @@ export const getAllOrders = async (req, res, next) => {
 export const getUserOrders = async (req, res, next) => {
   const orders = await Order.find({ user: req.user._id })
     .populate("user", "name email")
-    .populate("products.product");
+    .populate("products.product")
+    .sort({ createdAt: -1 });
   res.status(200).json({
     success: true,
     orders,

@@ -1,41 +1,27 @@
 import React from "react";
 import { BsBoxSeam } from "react-icons/bs";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Orders = () => {
-  const orders = [
-    {
-      id: 1,
-      customer: "Aryan Singh",
-      products: [
-        "Men Round Neck T-Shirt x 2 (M)",
-        "Men Round Neck T-Shirt x 1 (XL)",
-      ],
-      address: "Shastripuram, Agra, UP",
-      phone: "9876543210",
-      items: 3,
-      amount: "$304",
-      paymentMethod: "COD",
-      paymentStatus: "Pending",
-      date: "21/06/2026",
-      status: "Order Placed",
-    },
-    {
-      id: 2,
-      customer: "Rahul Sharma",
-      products: [
-        "Oversized Hoodie x 1",
-        "Cotton Joggers x 1",
-      ],
-      address: "Noida Sector 62, UP",
-      phone: "9123456789",
-      items: 2,
-      amount: "$110",
-      paymentMethod: "Stripe",
-      paymentStatus: "Paid",
-      date: "20/06/2026",
-      status: "Shipped",
-    },
-  ];
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [orders, setOrders] = useState([]);
+  console.log(orders);
+
+  // fetch orders
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/orders`, {
+        withCredentials: true,
+      });
+      setOrders(response.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   return (
     <div className="p-6">
@@ -44,7 +30,7 @@ const Orders = () => {
       <div className="flex flex-col gap-5">
         {orders.map((order) => (
           <div
-            key={order.id}
+            key={order._id}
             className="border border-gray-300 rounded-sm p-5 text-neutral-700"
           >
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
@@ -53,31 +39,29 @@ const Orders = () => {
 
               <div className="md:col-span-2">
                 {order.products.map((item, index) => (
-                  <p key={index}>{item}</p>
+                  <p key={index}>{item?.product?.name}</p>
                 ))}
 
                 <div className="mt-3">
-                  <p className="font-semibold text-neutral-700">{order.customer}</p>
-                  <p>{order.address}</p>
-                  <p>{order.phone}</p>
+                  <p className="font-semibold text-neutral-700">{order.address.firstName} {order.address.lastName}</p>
+                  <p>{order.address.city + " " + order.address.state}</p>
+                  <p>{order.address.phone}</p>
                 </div>
               </div>
 
               <div>
-                <p>Items: {order.items}</p>
-                <p>Method: {order.paymentMethod}</p>
-                <p>Payment: {order.paymentStatus}</p>
-                <p>Date: {order.date}</p>
+                <p>Items: {order.products.length}</p>
+                <p>payment method: {order.paymentMethod}</p>
+                <p>payment status: {order.paymentStatus}</p>
+                <p>date: {order.createdAt.slice(0, 10)}</p>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col border">
                 <h3 className="text-lg">{order.amount}</h3>
 
                 <select className="border p-2 rounded">
                   <option>Order Placed</option>
-                  <option>Processing</option>
                   <option>Shipped</option>
-                  <option>Out for Delivery</option>
                   <option>Delivered</option>
                 </select>
               </div>

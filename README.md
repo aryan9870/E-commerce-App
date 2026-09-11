@@ -1,198 +1,107 @@
 # ZEN VY — Full-Stack E-Commerce Platform
 
-> A modern, production-style clothing e-commerce application built with the MERN stack. Browse collections, manage carts, checkout with Razorpay, and administer inventory through a role-based admin dashboard.
+> A modern fashion e-commerce web application built with the **MERN stack**. It delivers a complete shopping experience — product discovery, filtering, cart management, Razorpay checkout, order tracking — along with a role-based admin dashboard for managing catalog inventory.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-000000?logo=vercel&logoColor=white)](https://e-commerce-app-beta-inky.vercel.app) · [![GitHub](https://img.shields.io/badge/GitHub-aryan9870%2FE--commerce--App-181717?logo=github)](https://github.com/aryan9870/E-commerce-App)
-
----
-
-## Table of Contents
-
-- [Project Description](#project-description)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Architecture](#project-architecture)
-- [Installation Guide](#installation-guide)
-- [Environment Variables](#environment-variables)
-- [Usage Instructions](#usage-instructions)
-- [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
-- [Challenges Solved](#challenges-solved)
-- [Future Improvements](#future-improvements)
-- [Deployment Instructions](#deployment-instructions)
-- [Author](#author)
+[Live Demo](https://e-commerce-app-beta-inky.vercel.app) · [GitHub Repository](https://github.com/aryan9870/E-commerce-App)
 
 ---
 
-## Project Description
+## Overview
 
-**ZEN VY** is a full-stack e-commerce web application focused on fashion and apparel retail. The platform delivers a complete shopping experience—from product discovery and filtering to secure checkout and order tracking—while giving administrators the tools to manage catalog inventory and fulfillment workflows.
+**ZEN VY** is an end-to-end e-commerce platform for fashion and apparel retail, built as a full-stack project to demonstrate production-grade web development skills. The project covers the entire development lifecycle: REST API design, MongoDB data modeling, secure authentication, third-party payment and media integrations, and a component-driven React frontend.
 
-The frontend is a responsive React single-page application styled with Tailwind CSS, featuring a polished storefront (hero section, product grids, collection filters, and product detail pages) alongside authenticated user flows for cart management, checkout, and order history. State is managed with Zustand stores for authentication, cart, products, and UI loading states.
+**What the project demonstrates:**
 
-The backend is a RESTful Express API backed by MongoDB. It handles user authentication via JWT stored in HTTP-only cookies, product CRUD with Cloudinary image uploads, persistent server-side carts, Razorpay payment integration with signature verification, and role-based access control separating regular users from admins.
-
-This project demonstrates end-to-end full-stack development skills: API design, database modeling, secure authentication, third-party payment and media integrations, and a component-driven frontend architecture suitable for portfolio and recruiter review.
+- Secure user authentication with **JWT (HTTP-only cookies)** and **bcrypt** password hashing
+- **Role-based access control** separating regular shoppers from administrators
+- Server-persisted **shopping cart** with intelligent item merging
+- **Razorpay payment gateway** integration with server-side signature verification
+- **Cloudinary** cloud image storage for product media
+- **Joi** request validation and centralized error handling on the backend
+- Client-side **filtering, sorting, search, and pagination** on the frontend
 
 ---
 
 ## Features
 
 ### Storefront & Shopping
-
-- **Home page** with hero banner, brand marquee, and curated product sections (New Arrivals & Top Selling)
-- **Product collection** with client-side filtering by category, type, price range, and size
+- Responsive **home page** with hero banner, brand marquee, and curated product sections (*New Arrivals* & *Top Selling*)
+- **Collection page** with filters for category (Men/Women/Kids), type, price range (slider), and size
 - **Sorting** by newest, highest rated, and price (low-to-high / high-to-low)
-- **Pagination** (9 products per page) on the collection grid
+- **Pagination** (9 products per page) on the product grid
 - **Debounced search** across product name, category, sub-category, and brand
-- **Product detail pages** with image gallery, size/color selection, quantity controls, and similar product recommendations
-- **Star ratings display** on product cards and detail views
+- **Product detail pages** with image gallery, size/color selection, quantity controls, and similar-product recommendations
+- Star **rating display** on product cards and detail views
 
 ### Authentication & User Account
-
 - User **registration** and **login** with bcrypt password hashing
-- **JWT session management** using secure HTTP-only cookies (7-day expiry)
+- **JWT session** stored in secure HTTP-only cookies (7-day expiry)
 - **Persistent auth check** on app load via `/users/is-auth`
 - **Logout** with cookie clearing and cart state reset
 - **Role-based routing** — admin users access the dashboard; regular users see the cart
 
 ### Cart & Checkout
-
-- **Server-persisted cart** tied to authenticated users
+- **Server-persisted cart** tied to the authenticated user
 - Add items with product ID, quantity, size, and color
-- **Smart cart merging** — duplicate product + size + color combinations increment quantity
-- Update quantity (increment/decrement), remove items, and clear cart
-- **Checkout flow** with delivery address form and order summary (subtotal, 20% discount, shipping)
-- **Razorpay payment integration** with server-side HMAC signature verification
+- **Smart merging** — same product + size + color increments quantity instead of duplicating
+- Update quantity, remove items, and clear cart
+- **Checkout flow** with delivery address form and order summary (subtotal, discount, shipping)
+- **Razorpay** payment with server-side **HMAC-SHA256 signature verification**
 - **Order history** page showing status, date, and item summaries
 
 ### Admin Dashboard
-
-- Protected **admin-only routes** (`role: "admin"`)
-- **Add products** with multi-image upload (3 images), sizes, pricing, stock, and featured flag
+- **Admin-only routes** protected by `role: "admin"`
+- **Add products** with multi-image upload (up to 3 images), sizes, pricing, stock, and featured flag
 - **List and delete products** from inventory
-- **Order management API** (fetch all orders, update status) — admin UI partially implemented
+- **Order management** — fetch all orders and update order status
 
 ### Backend & Security
-
-- **Joi validation** on request bodies for users, products, cart, orders, and reviews
-- **Multer** in-memory image upload with type and size (2 MB) limits
+- **Joi validation** on all request bodies (users, products, cart, orders, reviews)
+- **Multer** in-memory image upload with type and 2 MB size limits
 - **Cloudinary** integration for product image storage
-- Centralized **error handling** middleware with consistent JSON responses
-- **CORS** configured for client origin with credentials support
+- **Centralized error handling** middleware with consistent JSON responses
+- **CORS** configured for the client origin with credentials support
 
 ---
 
 ## Tech Stack
 
-### Frontend (`client/`)
-
-| Technology | Purpose |
-|---|---|
-| [React 19](https://react.dev/) | UI library |
-| [Vite 7](https://vitejs.dev/) | Build tool & dev server |
-| [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first styling |
-| [React Router 7](https://reactrouter.com/) | Client-side routing |
-| [Zustand](https://zustand-demo.pmnd.rs/) | Lightweight state management |
-| [Axios](https://axios-http.com/) | HTTP client |
-| [React Hot Toast](https://react-hot-toast.com/) | Toast notifications |
-| [React Icons](https://react-icons.github.io/react-icons/) | Icon library |
-| [rc-slider](https://github.com/react-component/slider) | Price range filter slider |
-| [Razorpay Checkout](https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/) | Payment gateway (client SDK) |
-
-### Backend (`server/`)
-
-| Technology | Purpose |
-|---|---|
-| [Node.js](https://nodejs.org/) | Runtime |
-| [Express 5](https://expressjs.com/) | Web framework |
-| [MongoDB](https://www.mongodb.com/) + [Mongoose 9](https://mongoosejs.com/) | Database & ODM |
-| [JWT](https://jwt.io/) | Authentication tokens |
-| [bcrypt](https://www.npmjs.com/package/bcrypt) | Password hashing |
-| [Joi](https://joi.dev/) | Request validation |
-| [Multer](https://github.com/expressjs/multer) | File upload handling |
-| [Cloudinary](https://cloudinary.com/) | Cloud image storage |
-| [Razorpay](https://razorpay.com/) | Payment processing |
-| [cookie-parser](https://www.npmjs.com/package/cookie-parser) | Cookie parsing |
-| [CORS](https://www.npmjs.com/package/cors) | Cross-origin resource sharing |
+| Layer      | Technology                                                                                        |
+| ---------- | ------------------------------------------------------------------------------------------------- |
+| Frontend   | React 19, Vite 7, Tailwind CSS 4, React Router 7, Zustand, Axios, React Hot Toast, React Icons, rc-slider |
+| Backend    | Node.js, Express 5, Mongoose 9, JWT, bcrypt, Joi, Multer, Cloudinary, Razorpay, cookie-parser, CORS |
+| Database   | MongoDB                                                                                           |
+| Payments   | Razorpay (client SDK + server verification)                                                       |
+| Media      | Cloudinary (cloud image storage)                                                                  |
 
 ---
 
-## Project Architecture
+## Architecture
 
 This is a **monorepo** with separate `client/` and `server/` directories communicating over a REST API.
 
 ```
 E-commerce-App/
 ├── client/                          # React frontend (Vite)
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/                  # Static images, brand logos, mock data
-│   │   ├── components/              # Reusable UI components
-│   │   │   ├── Navbar.jsx           # Navigation, search, cart badge, auth menu
-│   │   │   ├── Hero.jsx             # Landing hero section
-│   │   │   ├── Filter.jsx           # Category, type, price, size filters
-│   │   │   ├── ProductGrid.jsx      # Filtered/sorted/paginated product grid
-│   │   │   ├── ProductCard.jsx      # Individual product card
-│   │   │   ├── SearchBar.jsx        # Debounced product search
-│   │   │   ├── PaymentButton.jsx    # Razorpay checkout handler
-│   │   │   ├── CartItems.jsx        # Cart line items
-│   │   │   └── ...
-│   │   ├── pages/                   # Route-level page components
-│   │   │   ├── Home.jsx
-│   │   │   ├── Collection.jsx
-│   │   │   ├── Product.jsx
-│   │   │   ├── Cart.jsx
-│   │   │   ├── CheckOut.jsx
-│   │   │   ├── MyOrder.jsx
-│   │   │   ├── Login.jsx / Signup.jsx
-│   │   │   ├── Dashboard.jsx        # Admin layout (nested routes)
-│   │   │   ├── AddProduct.jsx
-│   │   │   ├── ListItems.jsx
-│   │   │   └── Orders.jsx
-│   │   ├── store/                   # Zustand state stores
-│   │   │   ├── useAuthStore.js
-│   │   │   ├── useCartStore.js
-│   │   │   ├── useProductStore.js
-│   │   │   └── useUIStore.js
-│   │   ├── App.jsx                  # Root router & layout
-│   │   └── main.jsx                 # Entry point
-│   ├── index.html
-│   ├── vite.config.js
-│   └── package.json
+│   └── src/
+│       ├── components/              # Reusable UI (Navbar, Hero, Filter, ProductCard, PaymentButton, ...)
+│       ├── pages/                   # Route-level components (Home, Collection, Product, Cart, CheckOut, Dashboard, ...)
+│       ├── store/                   # Zustand stores (auth, cart, products, UI)
+│       ├── App.jsx                  # Root router & layout
+│       └── main.jsx                 # Entry point
 │
 └── server/                          # Express backend
-    ├── config/
-    │   ├── db.js                    # MongoDB connection
-    │   ├── cloudinary.js            # Image upload helper
-    │   └── razorpay.js              # Razorpay instance
-    ├── controllers/                 # Route handlers
-    │   ├── userController.js
-    │   ├── productController.js
-    │   ├── cartController.js
-    │   └── orderController.js
-    ├── middlewares/
-    │   ├── authMiddleware.js        # JWT + admin guard
-    │   ├── validate.js              # Joi validation wrapper
-    │   └── multer.js                # Image upload config
-    ├── models/                      # Mongoose schemas
-    │   ├── userSchema.js
-    │   ├── productSchema.js
-    │   ├── cartSchema.js
-    │   └── orderSchema.js
+    ├── config/                      # MongoDB, Cloudinary, Razorpay setup
+    ├── controllers/                 # Route handlers (user, product, cart, order)
+    ├── middlewares/                 # Auth guards, Joi validation, Multer upload
+    ├── models/                      # Mongoose schemas (User, Product, Cart, Order)
     ├── routes/                      # Express routers
-    │   ├── userRoute.js
-    │   ├── productRoute.js
-    │   ├── cartRoute.js
-    │   └── orderRoute.js
     ├── validations/                 # Joi schemas
-    ├── utils/
-    │   └── errorHandler.js
-    ├── server.js                    # App entry point
-    └── package.json
+    ├── utils/                       # Custom error handler
+    └── server.js                    # App entry point
 ```
 
-### Data Flow Overview
+### Data Flow
 
 ```
 ┌─────────────┐     HTTP + Cookies      ┌─────────────┐     Mongoose     ┌─────────────┐
@@ -210,14 +119,30 @@ E-commerce-App/
 
 ---
 
-## Installation Guide
+## Key Implementation Highlights
+
+These are the technical decisions and challenges solved in the project:
+
+| Area                    | Implementation                                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Secure authentication   | JWT stored in **HTTP-only cookies** with `secure` and `sameSite` flags set per environment                     |
+| Payment security        | Razorpay order created on the **server**; HMAC-SHA256 signature verified before persisting the order            |
+| Image upload pipeline   | Multer **memory storage** → Cloudinary upload stream → URL saved to MongoDB (no local disk dependency)          |
+| Cart deduplication      | Server-side matching of **product + size + color** before creating duplicate line items                          |
+| Role-based access       | `isLoggedIn` and `isAdmin` middleware guards protect routes; frontend conditionally renders admin routes         |
+| Input validation        | Centralized **Joi** validation middleware for consistent request validation across all endpoints                |
+| Cross-origin auth       | CORS with `credentials: true` and explicit client origin whitelist                                             |
+| Responsive UX           | Mobile filter modal, collapsible navbar menu, and Tailwind responsive breakpoints throughout                     |
+
+---
+
+## Getting Started
 
 ### Prerequisites
-
 - [Node.js](https://nodejs.org/) v18 or higher
-- [MongoDB](https://www.mongodb.com/) (local instance or [MongoDB Atlas](https://www.mongodb.com/atlas) cluster)
-- [Cloudinary](https://cloudinary.com/) account (free tier works)
-- [Razorpay](https://razorpay.com/) test account (for payments)
+- [MongoDB](https://www.mongodb.com/) (local instance or [MongoDB Atlas](https://www.mongodb.com/atlas))
+- [Cloudinary](https://cloudinary.com/) account
+- [Razorpay](https://razorpay.com/) test account
 
 ### 1. Clone the repository
 
@@ -286,7 +211,6 @@ CLIENT_URL=http://localhost:5173
 
 # Database
 MONGO_URI=mongodb://127.0.0.1:27017/zen-vy-ecommerce
-# MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/zen-vy-ecommerce
 
 # Authentication
 JWT_SECRET=your_super_secret_jwt_key_here
@@ -309,30 +233,58 @@ VITE_API_URL=http://localhost:5000/api/v1
 VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxx
 ```
 
-> **Note:** Never commit `.env` files to version control. Both `client/.gitignore` and `server/.gitignore` already exclude them.
+> **Note:** Never commit `.env` files to version control — they are already excluded by `.gitignore`.
 
 ---
 
-## Usage Instructions
+## API Endpoints
+
+Base URL: `http://localhost:5000/api/v1`
+
+| Method   | Endpoint                         | Auth       | Description                                               |
+| -------- | -------------------------------- | ---------- | --------------------------------------------------------- |
+| `POST`   | `/users/register`                | Public     | Register a new user                                       |
+| `POST`   | `/users/login`                   | Public     | Log in and receive a JWT cookie                            |
+| `GET`    | `/users/logout`                  | User       | Log out and clear the cookie                               |
+| `GET`    | `/users/is-auth`                 | User       | Check the current authenticated session                    |
+| `GET`    | `/products`                      | Public     | Get all products (`?q=` for search)                        |
+| `GET`    | `/products/:id`                  | Public     | Get a single product by ID                                 |
+| `POST`   | `/products`                      | Admin      | Create a product (multipart/form-data with images)         |
+| `DELETE` | `/products/:id`                  | Admin      | Delete a product                                           |
+| `POST`   | `/products/:id/review`           | User       | Add a review to a product                                  |
+| `DELETE` | `/products/:id/review/:reviewId` | User/Admin | Delete a review                                            |
+| `GET`    | `/products/:id/similar`          | Public     | Get similar products by sub-category                       |
+| `GET`    | `/carts`                         | User       | Get the user's cart (populated with products)              |
+| `POST`   | `/carts`                         | User       | Add an item to the cart                                    |
+| `PUT`    | `/carts/:productId`              | User       | Update quantity (`increment` / `decrement`)                |
+| `DELETE` | `/carts/:productId`              | User       | Remove an item from the cart                               |
+| `DELETE` | `/carts`                         | User       | Clear the entire cart                                      |
+| `POST`   | `/orders`                        | User       | Create a Razorpay order                                    |
+| `POST`   | `/orders/verify`                 | User       | Verify payment and save the order                          |
+| `GET`    | `/orders/my-orders`              | User       | Get the logged-in user's orders                            |
+| `GET`    | `/orders/:id`                    | User       | Get a single order by ID                                   |
+| `GET`    | `/orders`                        | Admin      | Get all orders                                             |
+| `PUT`    | `/orders/:id`                    | Admin      | Update order status (`pending` / `shipped` / `delivered`)  |
+
+---
+
+## Usage
 
 ### For Shoppers
-
-1. **Browse** the home page or navigate to **Collection** to explore all products.
-2. Use **filters** (category, type, price, size) and **sort options** to narrow results.
-3. Use the **search bar** in the navbar to find products by name, brand, or category.
-4. Click a product to view details — select **color**, **size**, and **quantity**, then **Add to Cart**.
-5. **Sign up** or **log in** to persist your cart on the server.
-6. Open the **cart**, review items, and proceed to **Checkout**.
-7. Fill in your **delivery address**, select **Razorpay** as the payment method, and click **Proceed To Buy**.
-8. Complete payment in the Razorpay modal — on success, view your order under **My Orders**.
+1. Browse the home page or open **Collection** to explore all products.
+2. Use **filters** and **sort options** to narrow results, or the **search bar** to find products.
+3. Open a product to view details — select **color**, **size**, and **quantity**, then **Add to Cart**.
+4. **Sign up / log in** to persist your cart on the server.
+5. Open the **cart**, review items, and proceed to **Checkout**.
+6. Fill in the **delivery address**, select **Razorpay**, and click **Proceed To Buy**.
+7. Complete the payment in the Razorpay modal — view your order under **Orders**.
 
 ### For Admins
-
 1. Log in with an account that has `role: "admin"`.
 2. Click **Dashboard** in the navbar.
-3. **Add Items** — upload 3 product images, fill in details, select sizes, and submit.
-4. **List Items** — view all products and delete items from inventory.
-5. Use the **Orders** API endpoints to manage fulfillment (admin orders UI is in progress).
+3. **Add Items** — upload product images, fill details, select sizes, and submit.
+4. **List Items** — view and delete products from inventory.
+5. **Orders** — manage order fulfillment.
 
 ### Build for Production
 
@@ -340,7 +292,7 @@ VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxx
 # Frontend
 cd client
 npm run build        # Output in client/dist/
-npm run preview      # Preview production build locally
+npm run preview      # Preview the production build locally
 
 # Backend
 cd server
@@ -349,144 +301,23 @@ npm start            # Runs server.js (ensure NODE_ENV=production)
 
 ---
 
-## API Endpoints
+## Roadmap / Future Improvements
 
-Base URL: `http://localhost:5000/api/v1`
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| **Users** |
-| `POST` | `/users/register` | Public | Register a new user |
-| `POST` | `/users/login` | Public | Log in and receive JWT cookie |
-| `GET` | `/users/logout` | User | Log out and clear cookie |
-| `GET` | `/users/is-auth` | User | Check current authenticated session |
-| **Products** |
-| `GET` | `/products` | Public | Get all products (`?q=` for search) |
-| `GET` | `/products/:id` | Public | Get single product by ID |
-| `POST` | `/products` | Admin | Create product (multipart/form-data, images) |
-| `DELETE` | `/products/:id` | Admin | Delete a product |
-| `POST` | `/products/:id/review` | User | Add a review to a product |
-| `DELETE` | `/products/:id/review/:reviewId` | User/Admin | Delete a review |
-| `GET` | `/products/:id/similar` | Public | Get similar products by sub-category |
-| **Cart** |
-| `GET` | `/carts` | User | Get user's cart (populated with products) |
-| `POST` | `/carts` | User | Add item to cart |
-| `PUT` | `/carts/:productId` | User | Update quantity (`operation`: `increment` / `decrement`) |
-| `DELETE` | `/carts/:productId` | User | Remove item from cart |
-| `DELETE` | `/carts` | User | Clear entire cart |
-| **Orders** |
-| `POST` | `/orders` | User | Create Razorpay order |
-| `POST` | `/orders/verify` | User | Verify payment & save order |
-| `GET` | `/orders/my-orders` | User | Get logged-in user's orders |
-| `GET` | `/orders/:id` | User | Get single order by ID |
-| `GET` | `/orders` | Admin | Get all orders |
-| `PUT` | `/orders/:id` | Admin | Update order status (`pending` / `shipped` / `delivered`) |
-
-### Example Requests
-
-**Register:**
-
-```bash
-curl -X POST http://localhost:5000/api/v1/users/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"secret123"}'
-```
-
-**Search products:**
-
-```bash
-curl "http://localhost:5000/api/v1/products?q=jeans"
-```
-
-**Add to cart** (requires auth cookie):
-
-```bash
-curl -X POST http://localhost:5000/api/v1/carts \
-  -H "Content-Type: application/json" \
-  -b "token=<jwt_cookie>" \
-  -d '{"productId":"<product_id>","quantity":1,"size":"M","color":"brown"}'
-```
-
----
-
-## Screenshots
-
-> Replace the placeholder paths below with your actual screenshot files (e.g., store them in `/docs/screenshots/`).
-
-| Page | Preview |
-|---|---|
-| **Home** | ![Home Page](./docs/screenshots/home.png) |
-| **Collection** | ![Collection Page](./docs/screenshots/collection.png) |
-| **Product Detail** | ![Product Detail](./docs/screenshots/productDetail.png) |
-| **Cart** | ![Cart Page](./docs/screenshots/cart.png) |
-| **Checkout** | ![Checkout Page](./docs/screenshots/checkout.png) |
-| **Admin Dashboard** | ![Admin Dashboard](./docs/screenshots/dashboard.png) |
-
----
-
-## Challenges Solved
-
-| Challenge | Solution |
-|---|---|
-| **Secure authentication without exposing tokens** | JWT stored in HTTP-only cookies with `secure` and `sameSite` flags configured per environment |
-| **Payment security** | Razorpay order creation on the server; HMAC-SHA256 signature verification before persisting orders |
-| **Image upload pipeline** | Multer memory storage → Cloudinary upload stream → URL stored in MongoDB (no local disk dependency) |
-| **Cart item deduplication** | Server-side logic matches product ID + size + color before creating duplicate line items |
-| **Role-based access** | `isLoggedIn` and `isAdmin` middleware guards protect routes; frontend conditionally renders admin dashboard routes |
-| **Input validation** | Centralized Joi validation middleware ensures consistent request validation across all endpoints |
-| **Cross-origin auth** | CORS configured with `credentials: true` and explicit client origin whitelist |
-| **Responsive UX** | Mobile filter modal, collapsible navbar menu, and Tailwind responsive breakpoints throughout |
-
----
-
-## Future Improvements
-
-- [ ] Complete the **admin Orders UI** (backend API is ready; frontend page is a placeholder)
+- [ ] Complete the **admin Orders UI** (backend API is ready)
 - [ ] Add a **product review UI** on the frontend (API endpoints already exist)
-- [ ] Implement **Cash on Delivery (COD)** flow (UI present; currently disabled in favor of Razorpay)
+- [ ] Implement **Cash on Delivery (COD)** flow
 - [ ] Add **protected route wrappers** for checkout, cart, and order pages
 - [ ] Server-side **pagination and filtering** for large product catalogs
-- [ ] **Order detail page** (`/order/:id` route referenced but not yet registered)
 - [ ] **Email notifications** for order confirmation and status updates
 - [ ] **Wishlist** functionality
 - [ ] **Inventory sync** — decrement stock on successful order placement
 - [ ] **Unit and integration tests** for API routes and critical user flows
-- [ ] Remove unused **Stripe** dependency or integrate as an alternate payment method
-
----
-
-## Deployment Instructions
-
-### Backend (Render / Railway / Fly.io)
-
-1. Push the `server/` directory to your hosting provider.
-2. Set all environment variables from [Server `.env`](#server-serverenv).
-3. Set `NODE_ENV=production` and update `CLIENT_URL` to your deployed frontend URL.
-4. Use a MongoDB Atlas connection string for `MONGO_URI`.
-5. Start command: `npm start`
-
-### Frontend (Vercel / Netlify)
-
-1. Connect the `client/` directory to your hosting provider.
-2. Set build command: `npm run build`
-3. Set output directory: `dist`
-4. Add environment variables:
-   - `VITE_API_URL=https://your-api-domain.com/api/v1`
-   - `VITE_RAZORPAY_KEY_ID=your_razorpay_key_id`
-5. Deploy.
-
-### Post-Deployment Checklist
-
-- [ ] Update CORS `CLIENT_URL` on the server to match the production frontend URL
-- [ ] Switch Razorpay from test keys to live keys
-- [ ] Verify cookie `sameSite: "none"` and `secure: true` work over HTTPS
-- [ ] Test the full checkout flow end-to-end in production
 
 ---
 
 ## Author
 
-**Aryan**
+**Aryan** — BCA Student & Full-Stack Developer
 
 - GitHub: [@aryan9870](https://github.com/aryan9870)
 - Email: [aryan7017n@gmail.com](mailto:aryan7017n@gmail.com)
@@ -494,6 +325,4 @@ curl -X POST http://localhost:5000/api/v1/carts \
 
 ---
 
-<p align="center">
-  Built with React, Express, MongoDB, and Razorpay · © 2026 ZEN VY
-</p>
+Built with React, Express, MongoDB, Cloudinary, and Razorpay · © 2026 ZEN VY

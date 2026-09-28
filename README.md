@@ -33,6 +33,8 @@
 
 **Database:** MongoDB
 
+**DevOps:** Docker, Docker Compose
+
 ---
 
 ## Getting Started
@@ -42,6 +44,7 @@
 - MongoDB (local or Atlas)
 - Cloudinary account
 - Razorpay test account
+- Docker & Docker Compose (optional, for containerized run)
 
 ### Installation
 
@@ -87,6 +90,21 @@ npm run dev            # http://localhost:5000
 # Terminal 2 — Frontend
 cd client
 npm run dev            # http://localhost:5173
+```
+
+### Run with Docker (alternative)
+
+Requires `server/.env` and `client/.env` (see above).
+
+```bash
+docker compose up --build
+```
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:5000
+
+```bash
+docker compose down    # stop containers
 ```
 
 ### Create an Admin User

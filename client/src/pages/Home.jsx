@@ -4,7 +4,6 @@ import ProductSection from '../components/ProductSection'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import useUIStore from '../store/useUIStore'
-import LoadingSpinner from '../components/LoadingSpinner'
 
 const Home = () => {
 
@@ -13,10 +12,8 @@ const Home = () => {
   const { loading, setLoading } = useUIStore();
 
   const fetchProducts = async () => {
-    setLoading(true);
     try {
       const res = await axios.get(`${API_URL}/products`);
-      console.log(res.data.products);
       setItems(res.data.products);
     } catch (error) {
       console.log(error.response.data.message);
@@ -33,7 +30,7 @@ const Home = () => {
   let newArrivals = items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 4);
   let topSelling = items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).reverse().slice(0, 4);
 
-  return loading ? <LoadingSpinner /> : (
+  return (
     <div className='text-gray-600 tracking-wider'>
       <Hero />
       <div className='mx-20 max-sm:mx-5'>

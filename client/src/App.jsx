@@ -20,13 +20,20 @@ import Dashboard from "./pages/Dashboard";
 import AddProduct from "./pages/AddProduct";
 import Orders from "./pages/Orders";
 import ListItems from "./pages/ListItems";
+import LoadingSpinner from "./components/LoadingSpinner";
+import useUIStore from "./store/useUIStore";
 
 const App = () => {
   const { user, checkAuth } = useAuthStore();
+  const { loading } = useUIStore();
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  if(loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <>

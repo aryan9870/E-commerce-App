@@ -2,6 +2,8 @@ import Order from "../models/orderSchema.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import razorpayInstance from "../config/razorpay.js";
 import crypto from "crypto";
+import Product from "../models/productSchema.js";
+import mongoose from "mongoose";
 
 // create order
 export const createOrder = async (req, res, next) => {
@@ -23,25 +25,48 @@ export const createOrder = async (req, res, next) => {
 
 // verify order
 export const verifyOrder = async (req, res, next) => {
-  try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, address, paymentMethod, cart, total } =
+  console.log("Verifying order with data:", req.body);
+
+  let session;
+
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, address, paymentMethod, cart, total } =
       req.body;
 
-    const body = razorpay_order_id + "|" + razorpay_payment_id;
+  const products = cart.items.map((item) => ({
+      product: item.product._id,
+      quantity: item.quantity,
+    }));
 
-    const expectedSignature = crypto
+  console.log("Products to be saved in order:", products);
+
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+  const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body.toString())
       .digest("hex");
 
+  try {
     if (expectedSignature === razorpay_signature) {
+      // Start transaction
+      session = await mongoose.startSession();
+      session.startTransaction();
+
+      // Update product quantities
+      await Product.bulkWrite(
+        products.map((item) => ({
+          updateOne: {
+            filter: { _id: item.product },
+            update: { $inc: { stock: -item.quantity } },
+          },
+        })),
+        { session }
+      );
+      
       // Save order details to database
       const order = new Order({
         user: req.user._id,
-        products: cart.items.map((item) => ({
-          product: item.product._id,
-          quantity: item.quantity,
-        })),
+        products,
         totalPrice: total, // Store in smallest currency unit
         paymentMethod,
         address: address,
@@ -50,18 +75,33 @@ export const verifyOrder = async (req, res, next) => {
         razorpayOrderId: razorpay_order_id, 
         razorpayPaymentId: razorpay_payment_id,
       });
-      await order.save();
+      
+      await order.save({ session });
 
-       res.json({ message: "Order created successfully", success: true });
+      // Commit transaction
+      await session.commitTransaction();
+
+      res.json({ message: "Order created successfully", success: true });
     } else {
       res.json({ message: "Payment Failed", success: false });
     }
 
   } catch (error) {
+    // Rollback transaction
+    if (session?.inTransaction()) {
+      await session.abortTransaction();
+    }
+
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Error verifying payment", success: false });
+
+    res.status(500).json({
+      message: "Error verifying payment",
+      success: false,
+    });
+  } finally {
+    if (session) {
+      await session.endSession();
+    }
   }
 };
 

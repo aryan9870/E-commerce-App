@@ -24,7 +24,9 @@ const Product = () => {
       const response = await axios.get(`${API_URL}/products/${id}`, {
         withCredentials: true,
       });
-      setProduct(response.data.product);
+      const fetchedProduct = response.data.product;
+      setProduct(fetchedProduct);
+      setSize(fetchedProduct.sizes?.[0] || "");
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +64,8 @@ const Product = () => {
   // Add to Cart
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState("brown");
+  console.log(size);
 
   
 
@@ -122,7 +125,7 @@ const Product = () => {
             <p>Select Colors</p>
             <div className="flex gap-4">
               <label className="cursor-pointer">
-                <input onChange={() => setColor("brown")} type="radio" name="color" className="peer hidden" />
+                <input checked={color === "brown"} onChange={() => setColor("brown")} type="radio" name="color" className="peer hidden" />
 
                 <div
                   className="w-10 h-10 rounded-full bg-yellow-900 
@@ -159,11 +162,11 @@ const Product = () => {
           <div className=" flex flex-col gap-2">
             <p>Choose Size</p>
             <div className="flex gap-5">
-              {product.sizes.map((size, idx) => (
+              {product.sizes.map((sizeValue, idx) => (
                 <label key={idx} className="cursor-pointer">
-                  <input onChange={() => setSize(size)} type="radio" name="size" className="peer hidden" />
+                  <input checked={size === sizeValue} onChange={() => setSize(sizeValue)} type="radio" name="size" className="peer hidden" />
                   <span className="bg-gray-200 rounded-full py-2.5 px-3 text-xs flex items-center justify-center peer-checked:text-white peer-checked:bg-black">
-                    {size === "XXS" ? "XX-Small" : size === "XS" ? "X-Small" : size === "S" ? "Small" : size === "M" ? "Medium" : size === "L" ? "Large" : size === "XL" ? "X-Large" : size === "XXL" ? "XX-Large" : size === "3XL" ? "3X-Large" : size === "4XL" ? "4X-Large" : size}
+                    {sizeValue === "XXS" ? "XX-Small" : sizeValue === "XS" ? "X-Small" : sizeValue === "S" ? "Small" : sizeValue === "M" ? "Medium" : sizeValue === "L" ? "Large" : sizeValue === "XL" ? "X-Large" : sizeValue === "XXL" ? "XX-Large" : sizeValue === "3XL" ? "3X-Large" : sizeValue === "4XL" ? "4X-Large" : sizeValue}
                   </span>
                 </label>
               ))}

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import PaymentButton from "../components/PaymentButton";
 
 const CheckOut = () => {
-  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [paymentMethod, setPaymentMethod] = useState("razorpay");
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
@@ -189,21 +189,7 @@ const CheckOut = () => {
               </p>
             </div>
             <div className="flex gap-5 mt-5 flex-wrap">
-              <label
-                htmlFor="cod"
-                className="flex gap-2 cursor-pointer text-lg"
-              >
-                <input
-                  checked={paymentMethod === "cod"}
-                  onChange={handlePaymentMethodChange}
-                  value={"cod"}
-                  className="accent-black"
-                  type="radio"
-                  name="payment"
-                  id="cod"
-                />
-                <p>Cash on Delivery</p>
-              </label>
+
               <label
                 htmlFor="razorpay"
                 className="flex gap-2 cursor-pointer text-lg"
@@ -219,6 +205,23 @@ const CheckOut = () => {
                 />
                 <p>Razorpay</p>
               </label>
+
+              <label
+                htmlFor="cod"
+                className="flex gap-2 cursor-pointer text-lg"
+              >
+                <input
+                  checked={paymentMethod === "cod"}
+                  onChange={handlePaymentMethodChange}
+                  value={"cod"}
+                  className="accent-black"
+                  type="radio"
+                  name="payment"
+                  id="cod"
+                />
+                <p>Cash on Delivery</p>
+              </label>
+              
 
             </div>
             <PaymentButton address={address} paymentMethod={paymentMethod} cart={cart} total={total} />
